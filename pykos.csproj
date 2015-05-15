@@ -45,6 +45,7 @@
     <Compile Include="Util\Logging.cs" />
     <Compile Include="Gui\GuiManager.cs" />
     <Compile Include="Gui\ToolbarButton.cs" />
+    <Compile Include="Gui\ConsoleWindow.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>

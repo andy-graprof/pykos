@@ -50,6 +50,7 @@ internal class ToolbarButton
   private void onClick ()
     {
       Logging.debug("handling ToolbarButton Event: onClick");
+      GuiManager.instance.toggleConsoleWindow();
     }
 
 }

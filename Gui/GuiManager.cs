@@ -9,15 +9,21 @@ namespace pykos.Gui
 internal class GuiManager
 {
 
-  private ToolbarButton toolbarButton = null;
+  public static GuiManager instance { get; set; }
 
-  public GuiManager ()
+  public static void initialize ()
+    {
+      instance = new GuiManager();
+    }
+
+  private ToolbarButton toolbarButton = null;
+  private ConsoleWindow consoleWindow = null;
+
+  private GuiManager ()
     {
       toolbarButton = new ToolbarButton();
-    }
-    
-  public void setup ()
-    {
+      consoleWindow = new ConsoleWindow();
+      
       Logging.debug("registering GuiManager Events");
       GameEvents.onGUIApplicationLauncherReady.Add(onGUIApplicationLauncherReady);
       GameEvents.onGUIApplicationLauncherDestroyed.Add(onGUIApplicationLauncherDestroyed);
@@ -33,6 +39,11 @@ internal class GuiManager
     {
       Logging.debug("handling GuiManager Event: onGUIApplicationLauncherDestroyed");
       toolbarButton.release();
+    }
+  
+  public void toggleConsoleWindow ()
+    {
+      consoleWindow.toggleVisibility();
     }
   
 }
