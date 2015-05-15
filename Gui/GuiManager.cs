@@ -13,6 +13,7 @@ internal class GuiManager
 
   public static void initialize ()
     {
+      Logging.debug("creating singleton instance of GuiManager");
       instance = new GuiManager();
     }
 
@@ -33,12 +34,14 @@ internal class GuiManager
     {
       Logging.debug("handling GuiManager Event: onGUIApplicationLauncherReady");
       toolbarButton.register();
+      consoleWindow.register();
     }
 
   private void onGUIApplicationLauncherDestroyed ()
     {
       Logging.debug("handling GuiManager Event: onGUIApplicationLauncherDestroyed");
       toolbarButton.release();
+      consoleWindow.release();
     }
   
   public void toggleConsoleWindow ()

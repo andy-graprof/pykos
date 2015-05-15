@@ -28,6 +28,9 @@ internal class ToolbarButton
 
   public void register ()
     {
+      if (button != null)
+        return;
+    
       Logging.debug("registering ToolbarButton");
       button = ApplicationLauncher.Instance.AddModApplication(
         onClick,
@@ -43,8 +46,12 @@ internal class ToolbarButton
     
   public void release ()
     {
+      if (button == null)
+        return;
+    
       Logging.debug("releasing ToolbarButton");
       ApplicationLauncher.Instance.RemoveModApplication(button);
+      button = null;
     }
 
   private void onClick ()
