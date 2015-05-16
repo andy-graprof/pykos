@@ -12,24 +12,25 @@ internal class GuiManager
 
   public static GuiManager instance { get; set; }
 
+  public static ArrayList windowList = new ArrayList();
+
   public static void initialize ()
     {
-      Logging.debug("creating singleton instance of GuiManager");
+      Logging.debug("initializing GuiManager");
       instance = new GuiManager();
     }
-
-  public static ArrayList windowList = new ArrayList();
 
   private ToolbarButton toolbarButton = null;
   private ConsoleWindow consoleWindow = null;
 
   private GuiManager ()
     {
-      toolbarButton = new ToolbarButton();
-      consoleWindow = new ConsoleWindow();
+      toolbarButton = new ToolbarButton(onToolbarButtonPressed);
+      consoleWindow = new ConsoleWindow(50, 50, 400, 300, "pyKOS");
       
-      Logging.debug("registering GuiManager Events");
+      Logging.debug("registering GuiManager Event: onGUIApplicationLauncherReady");
       GameEvents.onGUIApplicationLauncherReady.Add(onGUIApplicationLauncherReady);
+      Logging.debug("registering GuiManager Event: onGUIApplicationLauncherDestroyed");
       GameEvents.onGUIApplicationLauncherDestroyed.Add(onGUIApplicationLauncherDestroyed);
     }
     
@@ -47,7 +48,7 @@ internal class GuiManager
       consoleWindow.release();
     }
   
-  public void toggleConsoleWindow ()
+  public void onToolbarButtonPressed ()
     {
       consoleWindow.toggleVisibility();
     }

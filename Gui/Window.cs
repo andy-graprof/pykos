@@ -21,7 +21,7 @@ public class Window : MonoBehaviour
   protected bool visible = false;
   protected GameScenes[] scenes = null;
 
-  public Window (string _title, float left, float top, float width, float height, GameScenes[] _scenes = null)
+  public Window (float left, float top, float width, float height, string _title, GameScenes[] _scenes = null)
     {
       dimensions = new Rect(left, top, width, height);
       title = _title;
@@ -31,7 +31,10 @@ public class Window : MonoBehaviour
       
       style = new GUIStyle(HighLogic.Skin.window);      
     }
-    
+
+  public float width { get { return dimensions.width; } }
+  public float height { get { return dimensions.height; } }
+
   public void show ()
     {
       visible = true;
@@ -44,13 +47,11 @@ public class Window : MonoBehaviour
 
   public void register ()
     {
-      Logging.debug("registering ConsoleWindow");
       RenderingManager.AddToPostDrawQueue(0, onDraw);
     }
     
   public void release ()
     {
-      Logging.debug("releasing ConsoleWindow");
       RenderingManager.RemoveFromPostDrawQueue(0, onDraw);
     }
 
@@ -59,13 +60,18 @@ public class Window : MonoBehaviour
       if (!visible || scenes == null || !(scenes.Contains(HighLogic.LoadedScene)))
         return;
         
-      dimensions = GUI.Window(windowId, dimensions, redraw, title, style);
+      dimensions = GUI.Window(windowId, dimensions, onDrawWindow, title, style);
     }
     
-  virtual protected void redraw (int windowId)
+  private void onDrawWindow (int windowId)
     {
+      redraw();
+      
       GUI.DragWindow();
     }
+    
+  virtual protected void redraw () { }
+
 }
 
 }

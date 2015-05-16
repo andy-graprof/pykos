@@ -7,6 +7,8 @@ using UnityEngine;
 namespace pykos.Gui
 {
 
+public delegate void ToolbarButtonCallback ();
+
 internal class ToolbarButton
 {
 
@@ -21,8 +23,11 @@ internal class ToolbarButton
 
   private Texture2D texture = null;
   
-  public ToolbarButton ()
+  private ToolbarButtonCallback callback = null;
+  
+  public ToolbarButton (ToolbarButtonCallback _callback)
     {
+      callback = _callback;
       texture = GameDatabase.Instance.GetTexture("pykos/textures/toolbar-button",false);
     }
 
@@ -31,7 +36,6 @@ internal class ToolbarButton
       if (button != null)
         return;
     
-      Logging.debug("registering ToolbarButton");
       button = ApplicationLauncher.Instance.AddModApplication(
         onClick,
         onClick,
@@ -49,7 +53,6 @@ internal class ToolbarButton
       if (button == null)
         return;
     
-      Logging.debug("releasing ToolbarButton");
       ApplicationLauncher.Instance.RemoveModApplication(button);
       button = null;
     }
@@ -57,7 +60,7 @@ internal class ToolbarButton
   private void onClick ()
     {
       Logging.debug("handling ToolbarButton Event: onClick");
-      GuiManager.instance.toggleConsoleWindow();
+      callback();
     }
 
 }
