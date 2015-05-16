@@ -2,6 +2,7 @@
 using pykos.Util;
 
 using System;
+using System.Collections;
 
 namespace pykos.Gui
 {
@@ -16,6 +17,8 @@ internal class GuiManager
       Logging.debug("creating singleton instance of GuiManager");
       instance = new GuiManager();
     }
+
+  public static ArrayList windowList = new ArrayList();
 
   private ToolbarButton toolbarButton = null;
   private ConsoleWindow consoleWindow = null;

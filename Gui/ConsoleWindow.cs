@@ -7,60 +7,30 @@ using UnityEngine;
 namespace pykos.Gui
 {
 
-public class ConsoleWindow
+public class ConsoleWindow : Window
 {
 
-  private Rect shape = new Rect(0, 0, 320, 240);
-  private GUIStyle style = null;
-  private bool visible = false;
+  private ConsoleWidget consoleWidget = null;
+  private ButtonWidget closeButtonWidget = null;
 
-  public ConsoleWindow ()
+  public ConsoleWindow () : base("pyKOS", 60, 50, 320, 240, 
+      new GameScenes[] { GameScenes.FLIGHT, GameScenes.SPACECENTER, GameScenes.EDITOR, GameScenes.TRACKSTATION })
     {
-      style = new GUIStyle(HighLogic.Skin.window);
-    }
-
-  public void register ()
-    {
-      Logging.debug("registering ConsoleWindow");
-      RenderingManager.AddToPostDrawQueue(0, onDraw);
-    }
-    
-  public void release ()
-    {
-      Logging.debug("releasing ConsoleWindow");
+      consoleWidget = new ConsoleWidget(this);
+      closeButtonWidget = new ButtonWidget(this);
     }
 
   public void toggleVisibility ()
     {
-      visible = !visible;
+      if (visible) hide(); else show();
     }
 
-  private bool isValidGameScene ()
+  override protected void redraw (int windowId)
     {
-      GameScenes current = HighLogic.LoadedScene;
-      return
-           current == GameScenes.FLIGHT
-        || current == GameScenes.SPACECENTER
-        || current == GameScenes.EDITOR
-        || current == GameScenes.TRACKSTATION;
-    }
-
-  private void onDraw ()
-    {
-      if (!visible || !isValidGameScene())
-        return;
-        
-      shape = GUI.Window(3004001, shape, drawWindow, "pyKOS", style);
-    }
-
-  private void drawWindow (int windowId)
-    {
-      GUILayout.BeginHorizontal();
-      GUILayout.Label("ABC-");
-      GUILayout.Label("123");
-      GUILayout.EndHorizontal();
-            
-      GUI.DragWindow();    
+      consoleWidget.redraw();
+      closeButtonWidget.redraw();
+    
+      GUI.DragWindow(); 
     }
 
 }

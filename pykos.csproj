@@ -46,6 +46,10 @@
     <Compile Include="Gui\GuiManager.cs" />
     <Compile Include="Gui\ToolbarButton.cs" />
     <Compile Include="Gui\ConsoleWindow.cs" />
+    <Compile Include="Gui\ConsoleWidget.cs" />
+    <Compile Include="Gui\ButtonWidget.cs" />
+    <Compile Include="Gui\Widget.cs" />
+    <Compile Include="Gui\Window.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>
