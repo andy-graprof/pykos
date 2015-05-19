@@ -35,7 +35,7 @@ internal class ToolbarButton
     {
       if (button != null)
         return;
-    
+
       button = ApplicationLauncher.Instance.AddModApplication(
         onClick,
         onClick,
@@ -52,7 +52,7 @@ internal class ToolbarButton
     {
       if (button == null)
         return;
-    
+
       ApplicationLauncher.Instance.RemoveModApplication(button);
       button = null;
     }

@@ -55,5 +55,12 @@
   <ItemGroup>
     <Folder Include="Util\" />
     <Folder Include="Gui\" />
+    <Folder Include="PythonAPI\" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\steelpython\SteelPython\SteelPython.csproj">
+      <Project>{846E9FA0-48F7-425F-A572-7886CFD82B7D}</Project>
+      <Name>SteelPython</Name>
+    </ProjectReference>
   </ItemGroup>
 </Project>

@@ -1,6 +1,7 @@
 
 using pykos.Util;
 using pykos.Gui;
+using SteelPython;
 
 using System;
 using UnityEngine;
@@ -12,14 +13,22 @@ namespace pykos
 public class Main : MonoBehaviour
 {
 
-  static Main ()
+  public void Awake ()
     {
       Logging.info("This is pyKOS!");
       Logging.debug("starting pyKOS initialization phase");
       
       GuiManager.initialize();
+      Interpreter.initialize("pyKOS");
       
       Logging.debug("pyKOS initialization phase complete");
+    }
+
+  public void Destroy ()
+    {
+      Logging.info("pyKOS shutting down");
+      
+      Interpreter.finalize();
     }
 
   /* these are kept for reference - Still learning about MonoBehaviour and KSP */
