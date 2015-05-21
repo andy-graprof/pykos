@@ -5,11 +5,10 @@
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProductVersion>10.0.0</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
-    <ProjectGuid>{614CA8CA-A49A-4414-BE87-EB1258944661}</ProjectGuid>
+    <ProjectGuid>{9403D987-911B-4401-B136-0AA5B7C690C4}</ProjectGuid>
     <OutputType>Library</OutputType>
-    <RootNamespace>pykos</RootNamespace>
-    <AssemblyName>pykos</AssemblyName>
-    <SynchReleaseVersion>false</SynchReleaseVersion>
+    <RootNamespace>pykosLauncher</RootNamespace>
+    <AssemblyName>pykosLauncher</AssemblyName>
     <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
@@ -32,30 +31,20 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="AssemblyInfo.cs" />
+    <Compile Include="Launcher.cs" />
     <Compile Include="Util\Logging.cs" />
-    <Compile Include="Gui\GuiManager.cs" />
-    <Compile Include="Gui\ToolbarButton.cs" />
-    <Compile Include="Gui\ConsoleWindow.cs" />
-    <Compile Include="Gui\ConsoleWidget.cs" />
-    <Compile Include="Gui\ButtonWidget.cs" />
-    <Compile Include="Gui\Widget.cs" />
-    <Compile Include="Gui\Window.cs" />
-    <Compile Include="PyKOS.cs" />
-    <Compile Include="Python\Interpreter.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>
     <Folder Include="Util\" />
-    <Folder Include="Gui\" />
-    <Folder Include="Python\" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="Assembly-CSharp">
-      <HintPath>..\..\..\..\usr\local\share\KSP_linux\KSP_Data\Managed\Assembly-CSharp.dll</HintPath>
+      <HintPath>..\..\..\..\..\usr\local\share\KSP_linux\KSP_Data\Managed\Assembly-CSharp.dll</HintPath>
     </Reference>
     <Reference Include="UnityEngine">
-      <HintPath>..\..\..\..\usr\local\share\KSP_linux\KSP_Data\Managed\UnityEngine.dll</HintPath>
+      <HintPath>..\..\..\..\..\usr\local\share\KSP_linux\KSP_Data\Managed\UnityEngine.dll</HintPath>
     </Reference>
   </ItemGroup>
 </Project>

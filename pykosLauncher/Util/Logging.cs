@@ -2,13 +2,13 @@
 using System;
 using System.IO;
 
-namespace pykos.Util
+namespace pykosLauncher.Util
 {
 
 internal static class Logging
 {
   
-  private static string logfilename = "pykos/pykos.log";
+  private static string logfilename = "pykos/pykosLauncher.log";
   private static StreamWriter logfile;
   
   public const int LOGLEVEL_NOTSET   =  0;

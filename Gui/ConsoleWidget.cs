@@ -1,6 +1,6 @@
 
 using pykos.Util;
-using SteelPython;
+using pykos.Python;
 
 using System;
 using UnityEngine;
@@ -31,6 +31,7 @@ public class ConsoleWidget : Widget
           Interpreter.execute(input);
           input = "";
           scroll = new Vector2(0, Mathf.Infinity);
+          Event.current.Use();
         }
     
       GUILayout.BeginArea(dimensions_out);
