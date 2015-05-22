@@ -25,7 +25,12 @@
     <SourceDirectory>.</SourceDirectory>
     <WarningLevel>All</WarningLevel>
     <WarningsAsErrors>true</WarningsAsErrors>
-    <ExtraCompilerArguments>-Wall -Wextra -Werror -g</ExtraCompilerArguments>
+    <ExtraCompilerArguments>-Wall -Wextra -Werror -g -DDEBUG=1</ExtraCompilerArguments>
+    <Includes>
+      <Includes>
+        <Include>${ProjectDir}</Include>
+      </Includes>
+    </Includes>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <OutputPath>bin\Release</OutputPath>
@@ -37,8 +42,15 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="steelpython.c" />
+    <Compile Include="api_c\output.c" />
   </ItemGroup>
   <ItemGroup>
     <None Include="steelpython.h" />
+    <None Include="util\misc.h" />
+    <None Include="api_c\output.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="util\" />
+    <Folder Include="api_c\" />
   </ItemGroup>
 </Project>

@@ -1,56 +1,39 @@
 
 #include "steelpython.h"
 
-#include <Python.h>
-#include <stdio.h>
-
-#define __unused __attribute__((unused))
-
-FILE *logfile = NULL;
-
-typedef void(*PythonOutputCallback)(char c);
-
-PythonOutputCallback onOutputCallback;
-
-static PyObject*
-pykos_putchar(__unused PyObject *self, PyObject *args)
-{
-  char out;
-
-  if(!PyArg_ParseTuple(args, "c", &out))
-    return NULL;
-
-  onOutputCallback(out);
-
-  Py_RETURN_NONE;
-}
-
-static PyMethodDef pykosMethods[] = {
-  {"putchar", pykos_putchar, METH_VARARGS, "pass a char of output back upwards"},
-  {NULL, NULL, 0, NULL}
-};
-
 void
-libsteelpython_initialize (
-  PythonOutputCallback outputCallback
-)
+libsteelpython_initialize (void)
 {
-  onOutputCallback = outputCallback;
-
-  Py_SetProgramName("steelpython");
+  Py_SetProgramName("pykos");
   Py_Initialize();
 
-  Py_InitModule("pykos", pykosMethods);
+  // errno has been polluted by Py_SetProgramName and Py_Initialize
+  errno = 0;
 
+  // get reference to __main__ module
+  PyObject *mod_main = PyImport_AddModule("__main__");
+  __check(NULL != mod_main);
+  
+  // import and get references to used modules
+  PyObject *mod_sys = PyImport_ImportModule("sys");
+  __check(NULL != mod_sys);
+
+  // create and get references to provided modules
+  PyObject *mod_pykosapi = Py_InitModule("_pykosapi", _pykosapi);
+  __check(NULL != mod_pykosapi);
+
+  // add referenced modules to __main__
+  __check(0 == PyModule_AddObject(mod_main, "_pykosapi", mod_pykosapi));
+  __check(0 == PyModule_AddObject(mod_main, "sys", mod_sys));
+
+  // create class for stdout / stderr capture
+
+  // capture stdout / stderr
   const char *preamble =
-    "import sys\n"
-    "import pykos\n"
     "class CatchOutErr:\n"
-    "  def init(self):\n"
-    "    pass\n"
     "  def write(self, txt):\n"
     "    for c in txt:\n"
-    "      pykos.putchar(c)\n"
+    "      _pykosapi.pykosOutput(c)\n"
     "catchOutErr = CatchOutErr()\n"
     "sys.stdout = catchOutErr\n"
     "sys.stderr = catchOutErr\n";
@@ -61,19 +44,19 @@ libsteelpython_initialize (
 void
 libsteelpython_execute (const char *code)
 {
-  onOutputCallback('>');
-  onOutputCallback('>');
-  onOutputCallback('>');
-  onOutputCallback(' ');
+  pykosOutputCallback('>');
+  pykosOutputCallback('>');
+  pykosOutputCallback('>');
+  pykosOutputCallback(' ');
 
   const char *c = code;
   while (*c)
     {
-      onOutputCallback(*c);
+      pykosOutputCallback(*c);
       ++c;
     }
 
-  onOutputCallback('\n');
+  pykosOutputCallback('\n');
 
   PyRun_SimpleString(code);
 }

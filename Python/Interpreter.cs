@@ -9,7 +9,8 @@ using System.Runtime.InteropServices;
 namespace pykos.Python
 {
 
-public delegate void PythonOutputCallback (char c);
+public delegate void TPykosLoggingCallback (string str);
+public delegate void TPykosOutputCallback (char c);
 
 public static class Interpreter
 {
@@ -18,15 +19,32 @@ public static class Interpreter
   public static string output { get { return String.Join("\n", lineBuffer.ToArray()); } }
 
   [DllImport("pykos/libs/libsteelpython_c.so")]
-  static extern void libsteelpython_initialize (
-    PythonOutputCallback outputCallback
+  static extern void libsteelpython_registerOutputCallbacks (
+    TPykosOutputCallback pykosOutputCallback,
+    TPykosLoggingCallback pykosLoggingDebugCallback,
+    TPykosLoggingCallback pykosLoggingInfoCallback,
+    TPykosLoggingCallback pykosLoggingWarningCallback,
+    TPykosLoggingCallback pykosLoggingErrorCallback,
+    TPykosLoggingCallback pykosLoggingCriticalCallback
   );
+
+  [DllImport("pykos/libs/libsteelpython_c.so")]
+  static extern void libsteelpython_initialize ();
+  
   public static void initialize ()
     {
       Logging.info("initializing Interpreter");
-      libsteelpython_initialize(
-        onOutputCallback
+      
+      libsteelpython_registerOutputCallbacks(
+        onOutputCallback,
+        Logging.debug,
+        Logging.info,
+        Logging.warning,
+        Logging.error,
+        Logging.critical
       );
+      
+      libsteelpython_initialize();
     }
 
   [DllImport("pykos/libs/libsteelpython_c.so")]
