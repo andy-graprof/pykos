@@ -17,7 +17,7 @@ public static class Interpreter
 
   public static string output { get { return String.Join("\n", lineBuffer.ToArray()); } }
 
-  [DllImport("pykos/libs/libsteelpython.so")]
+  [DllImport("pykos/libs/libsteelpython_c.so")]
   static extern void libsteelpython_initialize (
     PythonOutputCallback outputCallback
   );
@@ -29,7 +29,7 @@ public static class Interpreter
       );
     }
 
-  [DllImport("pykos/libs/libsteelpython.so")]
+  [DllImport("pykos/libs/libsteelpython_c.so")]
   static extern void libsteelpython_execute (string code);
   public static void execute (string code)
     {
