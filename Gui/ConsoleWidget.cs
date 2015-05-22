@@ -26,7 +26,7 @@ public class ConsoleWidget : Widget
 
   override public void redraw ()
     {
-      if (Event.current.type == EventType.KeyDown && Event.current.keyCode == KeyCode.Return)
+      if (Event.current.type == EventType.KeyDown && Event.current.keyCode == KeyCode.Return && !Event.current.control)
         {
           Interpreter.execute(input);
           input = "";
@@ -36,7 +36,7 @@ public class ConsoleWidget : Widget
     
       GUILayout.BeginArea(dimensions_out);
       scroll = GUILayout.BeginScrollView(scroll);
-      GUILayout.TextArea(Interpreter.output, GUILayout.MinHeight(dimensions_out.height));
+      GUILayout.TextArea(Interpreter.output, GUILayout.ExpandHeight(true));
       GUILayout.EndScrollView();
       GUILayout.EndArea();
       
