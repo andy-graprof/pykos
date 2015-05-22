@@ -26,10 +26,10 @@ public class Window : MonoBehaviour
       dimensions = new Rect(left, top, width, height);
       title = _title;
       scenes = _scenes;
-      
+
       windowId = GuiManager.windowList.Add(title);
-      
-      style = new GUIStyle(HighLogic.Skin.window);      
+
+      style = new GUIStyle(HighLogic.Skin.window);
     }
 
   public float width { get { return dimensions.width; } }
@@ -39,7 +39,7 @@ public class Window : MonoBehaviour
     {
       visible = true;
     }
-    
+
   public void hide ()
     {
       visible = false;
@@ -49,7 +49,7 @@ public class Window : MonoBehaviour
     {
       RenderingManager.AddToPostDrawQueue(0, onDraw);
     }
-    
+
   public void release ()
     {
       RenderingManager.RemoveFromPostDrawQueue(0, onDraw);
@@ -59,17 +59,17 @@ public class Window : MonoBehaviour
     {
       if (!visible || scenes == null || !(scenes.Contains(HighLogic.LoadedScene)))
         return;
-        
+
       dimensions = GUI.Window(windowId, dimensions, onDrawWindow, title, style);
     }
-    
+
   private void onDrawWindow (int windowId)
     {
       redraw();
-      
+
       GUI.DragWindow();
     }
-    
+
   virtual protected void redraw () { }
 
 }

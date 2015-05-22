@@ -16,9 +16,9 @@ public class ConsoleWindow : Window
   private const float borderMargin = 5;
   private const float titleMargin = 20;
   private const float closeButtonWidth = 100;
-  private const float closeButtonHeight = 20;    
+  private const float closeButtonHeight = 20;
 
-  public ConsoleWindow (float left, float top, float width, float height, string title) : base(left, top, width, height, title, 
+  public ConsoleWindow (float left, float top, float width, float height, string title) : base(left, top, width, height, title,
       new GameScenes[] { GameScenes.FLIGHT, GameScenes.SPACECENTER, GameScenes.EDITOR, GameScenes.TRACKSTATION })
     {
       children.Add(new ConsoleWidget(this,
@@ -28,7 +28,7 @@ public class ConsoleWindow : Window
         height - titleMargin - borderMargin - borderMargin - closeButtonHeight - borderMargin
       ));
       children.Add(new ButtonWidget(this,
-        width - borderMargin - closeButtonWidth, 
+        width - borderMargin - closeButtonWidth,
         height - borderMargin - closeButtonHeight,
         closeButtonWidth,
         closeButtonHeight,
@@ -47,7 +47,7 @@ public class ConsoleWindow : Window
       foreach (Widget child in children)
         child.redraw();
     }
-    
+
   private void onCloseButtonClicked ()
     {
       hide();

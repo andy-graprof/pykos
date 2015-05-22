@@ -19,7 +19,7 @@ public class Widget
 
   virtual public void redraw ()
     {
-    
+
     }
 
 }

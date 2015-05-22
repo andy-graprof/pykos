@@ -16,10 +16,10 @@ public static class PyKOS
     {
       Logging.info("This is pyKOS!");
       Logging.debug("starting pyKOS initialization phase");
-      
+
       GuiManager.initialize();
       Interpreter.initialize();
-      
+
       Logging.debug("pyKOS initialization phase complete");
     }
 

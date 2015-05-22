@@ -21,11 +21,6 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <ConsolePause>false</ConsolePause>
-    <CustomCommands>
-      <CustomCommands>
-        <Command type="Build" command="make &amp;&amp; exit" workingdir="steelpython/" externalConsole="true" pauseExternalConsole="true" />
-      </CustomCommands>
-    </CustomCommands>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>none</DebugType>
@@ -62,5 +57,11 @@
     <Reference Include="UnityEngine">
       <HintPath>..\..\..\..\usr\local\share\KSP_linux\KSP_Data\Managed\UnityEngine.dll</HintPath>
     </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="libsteelpython_c\libsteelpython_c.cproj">
+      <Project>{0E07CD92-7FD4-4E15-9EA4-762487A037CC}</Project>
+      <Name>libsteelpython_c</Name>
+    </ProjectReference>
   </ItemGroup>
 </Project>

@@ -7,19 +7,19 @@ namespace pykos.Util
 
 internal static class Logging
 {
-  
+
   private static string logfilename = "pykos/pykos.log";
   private static StreamWriter logfile;
-  
+
   public const int LOGLEVEL_NOTSET   =  0;
   public const int LOGLEVEL_DEBUG    = 10;
   public const int LOGLEVEL_INFO     = 20;
   public const int LOGLEVEL_WARNING  = 30;
   public const int LOGLEVEL_ERROR    = 40;
   public const int LOGLEVEL_CRITICAL = 50;
-  
+
   public static int minimumLoglevel { get; set; }
-  
+
   static Logging ()
     {
       minimumLoglevel = LOGLEVEL_NOTSET;
@@ -57,9 +57,9 @@ internal static class Logging
     {
       if (loglevel < minimumLoglevel)
         return;
-    
+
       string s = "[" + DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss.ffff") + "][" + loglevel_str + "] " + msg;
-    
+
       // write to pyKOS log
       logfile.WriteLine(s);
       // write to KSP log
@@ -67,6 +67,6 @@ internal static class Logging
     }
 
 }
-  
+
 }
 

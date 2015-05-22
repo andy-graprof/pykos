@@ -20,17 +20,17 @@ public class ButtonWidget : Widget
     {
       dimensions = new Rect(left, top, width, height);
       caption = _caption;
-    
+
       callback = _callback;
     }
 
   override public void redraw ()
-    {   
+    {
       if (GUI.Button(dimensions, caption))
         callback();
     }
 
 }
-  
+
 }
 

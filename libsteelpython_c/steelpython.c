@@ -1,4 +1,6 @@
 
+#include "steelpython.h"
+
 #include <Python.h>
 #include <stdio.h>
 

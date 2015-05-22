@@ -27,13 +27,13 @@ internal class GuiManager
     {
       toolbarButton = new ToolbarButton(onToolbarButtonPressed);
       consoleWindow = new ConsoleWindow(50, 50, 400, 300, "pyKOS");
-      
+
       Logging.debug("registering GuiManager Event: onGUIApplicationLauncherReady");
       GameEvents.onGUIApplicationLauncherReady.Add(onGUIApplicationLauncherReady);
       Logging.debug("registering GuiManager Event: onGUIApplicationLauncherDestroyed");
       GameEvents.onGUIApplicationLauncherDestroyed.Add(onGUIApplicationLauncherDestroyed);
     }
-    
+
   private void onGUIApplicationLauncherReady ()
     {
       Logging.debug("handling GuiManager Event: onGUIApplicationLauncherReady");
@@ -47,13 +47,13 @@ internal class GuiManager
       toolbarButton.release();
       consoleWindow.release();
     }
-  
+
   public void onToolbarButtonPressed ()
     {
       consoleWindow.toggleVisibility();
     }
-  
+
 }
-  
+
 }
 

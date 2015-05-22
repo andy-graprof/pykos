@@ -22,9 +22,9 @@ internal class ToolbarButton
     | ApplicationLauncher.AppScenes.SPACECENTER;
 
   private Texture2D texture = null;
-  
+
   private ToolbarButtonCallback callback = null;
-  
+
   public ToolbarButton (ToolbarButtonCallback _callback)
     {
       callback = _callback;
@@ -47,7 +47,7 @@ internal class ToolbarButton
         texture
       );
     }
-    
+
   public void release ()
     {
       if (button == null)
@@ -64,6 +64,6 @@ internal class ToolbarButton
     }
 
 }
-  
+
 }
 

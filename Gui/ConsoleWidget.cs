@@ -13,7 +13,7 @@ public class ConsoleWidget : Widget
 
   private Rect dimensions_out;
   private Rect dimensions_in;
-  private string input = "";    
+  private string input = "";
   private Vector2 scroll = new Vector2(0, Mathf.Infinity);
 
   private const float inputEditHeight = 20;
@@ -33,13 +33,13 @@ public class ConsoleWidget : Widget
           scroll = new Vector2(0, Mathf.Infinity);
           Event.current.Use();
         }
-    
+
       GUILayout.BeginArea(dimensions_out);
       scroll = GUILayout.BeginScrollView(scroll);
       GUILayout.TextArea(Interpreter.output, GUILayout.ExpandHeight(true));
       GUILayout.EndScrollView();
       GUILayout.EndArea();
-      
+
       input = GUI.TextArea(dimensions_in, input);
     }
 

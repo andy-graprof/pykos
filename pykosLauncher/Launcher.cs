@@ -23,10 +23,10 @@ public class Launcher : MonoBehaviour
     {
       Logging.info("This is the pyKOS Launcher!");
       Logging.info("attempting to load pyKOS assembly");
-       
+
       AppDomain.CurrentDomain.AssemblyResolve += new ResolveEventHandler(onResolveAssembly);
       AppDomain.CurrentDomain.AssemblyLoad += new AssemblyLoadEventHandler(onLoadAssembly);
-      
+
       try
         {
           pykos = Assembly.Load("pykos");
@@ -37,9 +37,9 @@ public class Launcher : MonoBehaviour
           Logging.error(e.ToString());
           return;
         }
-        
+
       Logging.info("attempting to extract reference to PyKOS class");
-      
+
       try
         {
           pykosType = pykos.GetType("pykos.PyKOS");
@@ -50,9 +50,9 @@ public class Launcher : MonoBehaviour
           Logging.error(e.ToString());
           return;
         }
-        
+
       Logging.info("attempting to extract method references");
-      
+
       try
         {
           awake = pykosType.GetMethod("Awake", BindingFlags.Public | BindingFlags.Static);
@@ -63,9 +63,9 @@ public class Launcher : MonoBehaviour
           Logging.error(e.ToString());
           return;
         }
-        
+
       Logging.info("attempting to hand control over to PyKOS");
-      
+
       try
         {
           awake.Invoke(null, null);
@@ -81,31 +81,22 @@ public class Launcher : MonoBehaviour
   private static Assembly onResolveAssembly (object sender, ResolveEventArgs args)
     {
       Logging.debug("resolving assembly: '" + args.Name + "'");
-      
-      try 
+
+      try
         {
-          return Assembly.LoadFrom(path + args.Name + ".dll");        
-        } 
+          return Assembly.LoadFrom(path + args.Name + ".dll");
+        }
       catch (Exception e)
         {
           Logging.error(e.ToString());
           return null;
         }
     }
-    
+
   private static void onLoadAssembly (object sender, AssemblyLoadEventArgs args)
     {
       Logging.debug("loaded assembly: '" + args.LoadedAssembly.FullName + "' from:" + args.LoadedAssembly.Location);
     }
-
-  /* these are kept for reference - Still learning about MonoBehaviour and KSP */
-  /*
-    public void Awake () { }
-    public void Start () { }
-    public void Update () { }
-    public void FixedUpdate () { }
-    public void OnDestroy () { }
-  */
 
 }
 
