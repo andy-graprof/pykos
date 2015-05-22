@@ -48,7 +48,7 @@ Global
 		$4.scope = text/plain
 		$0.StandardHeader = $5
 		$5.Text = 
-		$5.IncludeInNewFiles = True
+		$5.IncludeInNewFiles = False
 		$0.NameConventionPolicy = $6
 		$6.Rules = $7
 		$7.NamingRule = $8
