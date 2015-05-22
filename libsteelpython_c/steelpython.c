@@ -39,6 +39,8 @@ libsteelpython_initialize (void)
     "sys.stderr = catchOutErr\n";
 
   PyRun_SimpleString(preamble);
+  
+  
 }
 
 void
