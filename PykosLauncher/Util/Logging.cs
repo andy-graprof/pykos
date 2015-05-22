@@ -18,58 +18,71 @@
  *    along with this program.  If not, see <http://www.gnu.org/licenses/>.   *
  ******************************************************************************/
 
-using pykos.Util;
-
 using System;
-using System.Collections;
-using UnityEngine;
+using System.IO;
 
-namespace pykos.Gui
+namespace PyKOS.Launcher.Util
 {
 
-public class ConsoleWindow : Window
+internal static class Logging
 {
 
-  private ArrayList children = new ArrayList();
+  private static string logfilename = "pykos/pykosLauncher.log";
+  private static StreamWriter logfile;
 
-  private const float borderMargin = 5;
-  private const float titleMargin = 20;
-  private const float closeButtonWidth = 100;
-  private const float closeButtonHeight = 20;
+  public const int LOGLEVEL_NOTSET   =  0;
+  public const int LOGLEVEL_DEBUG    = 10;
+  public const int LOGLEVEL_INFO     = 20;
+  public const int LOGLEVEL_WARNING  = 30;
+  public const int LOGLEVEL_ERROR    = 40;
+  public const int LOGLEVEL_CRITICAL = 50;
 
-  public ConsoleWindow (float left, float top, float width, float height, string title) : base(left, top, width, height, title,
-      new GameScenes[] { GameScenes.FLIGHT, GameScenes.SPACECENTER, GameScenes.EDITOR, GameScenes.TRACKSTATION })
+  public static int minimumLoglevel { get; set; }
+
+  static Logging ()
     {
-      children.Add(new ConsoleWidget(this,
-        borderMargin,
-        titleMargin + borderMargin,
-        width - borderMargin - borderMargin,
-        height - titleMargin - borderMargin - borderMargin - closeButtonHeight - borderMargin
-      ));
-      children.Add(new ButtonWidget(this,
-        width - borderMargin - closeButtonWidth,
-        height - borderMargin - closeButtonHeight,
-        closeButtonWidth,
-        closeButtonHeight,
-        "Close",
-        onCloseButtonClicked
-      ));
+      minimumLoglevel = LOGLEVEL_NOTSET;
+
+      logfile = new StreamWriter(logfilename);
+      logfile.AutoFlush = true;
     }
 
-  public void toggleVisibility ()
+  public static void debug (string msg)
     {
-      if (visible) hide(); else show();
+      log(msg, "DBG", LOGLEVEL_DEBUG);
     }
 
-  override protected void redraw ()
+  public static void info (string msg)
     {
-      foreach (Widget child in children)
-        child.redraw();
+      log(msg, "INF", LOGLEVEL_INFO);
     }
 
-  private void onCloseButtonClicked ()
+  public static void warning (string msg)
     {
-      hide();
+      log(msg, "WRN", LOGLEVEL_WARNING);
+    }
+
+  public static void error (string msg)
+    {
+      log(msg, "ERR", LOGLEVEL_ERROR);
+    }
+
+  public static void critical (string msg)
+    {
+      log(msg, "CRT", LOGLEVEL_CRITICAL);
+    }
+
+  private static void log (string msg, string loglevel_str, int loglevel)
+    {
+      if (loglevel < minimumLoglevel)
+        return;
+
+      string s = "[" + DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss.ffff") + "][" + loglevel_str + "] " + msg;
+
+      // write to pyKOS log
+      logfile.WriteLine(s);
+      // write to KSP log
+      Console.WriteLine(s);
     }
 
 }

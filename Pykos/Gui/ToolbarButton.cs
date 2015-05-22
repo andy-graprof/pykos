@@ -18,58 +18,68 @@
  *    along with this program.  If not, see <http://www.gnu.org/licenses/>.   *
  ******************************************************************************/
 
-using pykos.Util;
+using PyKOS.Util;
 
 using System;
-using System.Collections;
+using UnityEngine;
 
-namespace pykos.Gui
+namespace PyKOS.Gui
 {
 
-internal class GuiManager
+public delegate void ToolbarButtonCallback ();
+
+internal class ToolbarButton
 {
 
-  public static GuiManager instance { get; set; }
+  private ApplicationLauncherButton button = null;
 
-  public static ArrayList windowList = new ArrayList();
+  private const ApplicationLauncher.AppScenes appScenes =
+      ApplicationLauncher.AppScenes.FLIGHT
+    | ApplicationLauncher.AppScenes.SPH
+    | ApplicationLauncher.AppScenes.VAB
+    | ApplicationLauncher.AppScenes.MAPVIEW
+    | ApplicationLauncher.AppScenes.SPACECENTER;
 
-  public static void initialize ()
+  private Texture2D texture = null;
+
+  private ToolbarButtonCallback callback = null;
+
+  public ToolbarButton (ToolbarButtonCallback _callback)
     {
-      Logging.debug("initializing GuiManager");
-      instance = new GuiManager();
+      callback = _callback;
+      texture = GameDatabase.Instance.GetTexture("pykos/textures/toolbar-button",false);
     }
 
-  private ToolbarButton toolbarButton = null;
-  private ConsoleWindow consoleWindow = null;
-
-  private GuiManager ()
+  public void register ()
     {
-      toolbarButton = new ToolbarButton(onToolbarButtonPressed);
-      consoleWindow = new ConsoleWindow(50, 50, 400, 300, "pyKOS");
+      if (button != null)
+        return;
 
-      Logging.debug("registering GuiManager Event: onGUIApplicationLauncherReady");
-      GameEvents.onGUIApplicationLauncherReady.Add(onGUIApplicationLauncherReady);
-      Logging.debug("registering GuiManager Event: onGUIApplicationLauncherDestroyed");
-      GameEvents.onGUIApplicationLauncherDestroyed.Add(onGUIApplicationLauncherDestroyed);
+      button = ApplicationLauncher.Instance.AddModApplication(
+        onClick,
+        onClick,
+        null,
+        null,
+        null,
+        null,
+        appScenes,
+        texture
+      );
     }
 
-  private void onGUIApplicationLauncherReady ()
+  public void release ()
     {
-      Logging.debug("handling GuiManager Event: onGUIApplicationLauncherReady");
-      toolbarButton.register();
-      consoleWindow.register();
+      if (button == null)
+        return;
+
+      ApplicationLauncher.Instance.RemoveModApplication(button);
+      button = null;
     }
 
-  private void onGUIApplicationLauncherDestroyed ()
+  private void onClick ()
     {
-      Logging.debug("handling GuiManager Event: onGUIApplicationLauncherDestroyed");
-      toolbarButton.release();
-      consoleWindow.release();
-    }
-
-  public void onToolbarButtonPressed ()
-    {
-      consoleWindow.toggleVisibility();
+      Logging.debug("handling ToolbarButton Event: onClick");
+      callback();
     }
 
 }

@@ -18,13 +18,13 @@
  *    along with this program.  If not, see <http://www.gnu.org/licenses/>.   *
  ******************************************************************************/
 
-using pykosLauncher.Util;
+using PyKOS.Launcher.Util;
 
 using System;
 using System.Reflection;
 using UnityEngine;
 
-namespace pykosLauncher
+namespace PyKOS.Launcher
 {
 
 [KSPAddon(KSPAddon.Startup.MainMenu, true)]
@@ -48,7 +48,7 @@ public class Launcher : MonoBehaviour
 
       try
         {
-          pykos = Assembly.Load("pykos");
+          pykos = Assembly.Load("PyKOS");
         }
       catch (Exception e)
         {
@@ -61,7 +61,7 @@ public class Launcher : MonoBehaviour
 
       try
         {
-          pykosType = pykos.GetType("pykos.PyKOS");
+          pykosType = pykos.GetType("PyKOS.PyKOS");
         }
       catch (Exception e)
         {

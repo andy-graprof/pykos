@@ -18,68 +18,71 @@
  *    along with this program.  If not, see <http://www.gnu.org/licenses/>.   *
  ******************************************************************************/
 
-using pykos.Util;
-
 using System;
-using UnityEngine;
+using System.IO;
 
-namespace pykos.Gui
+namespace PyKOS.Util
 {
 
-public delegate void ToolbarButtonCallback ();
-
-internal class ToolbarButton
+internal static class Logging
 {
 
-  private ApplicationLauncherButton button = null;
+  private static string logfilename = "pykos/pykos.log";
+  private static StreamWriter logfile;
 
-  private const ApplicationLauncher.AppScenes appScenes =
-      ApplicationLauncher.AppScenes.FLIGHT
-    | ApplicationLauncher.AppScenes.SPH
-    | ApplicationLauncher.AppScenes.VAB
-    | ApplicationLauncher.AppScenes.MAPVIEW
-    | ApplicationLauncher.AppScenes.SPACECENTER;
+  public const int LOGLEVEL_NOTSET   =  0;
+  public const int LOGLEVEL_DEBUG    = 10;
+  public const int LOGLEVEL_INFO     = 20;
+  public const int LOGLEVEL_WARNING  = 30;
+  public const int LOGLEVEL_ERROR    = 40;
+  public const int LOGLEVEL_CRITICAL = 50;
 
-  private Texture2D texture = null;
+  public static int minimumLoglevel { get; set; }
 
-  private ToolbarButtonCallback callback = null;
-
-  public ToolbarButton (ToolbarButtonCallback _callback)
+  static Logging ()
     {
-      callback = _callback;
-      texture = GameDatabase.Instance.GetTexture("pykos/textures/toolbar-button",false);
+      minimumLoglevel = LOGLEVEL_NOTSET;
+
+      logfile = new StreamWriter(logfilename);
+      logfile.AutoFlush = true;
     }
 
-  public void register ()
+  public static void debug (string msg)
     {
-      if (button != null)
+      log(msg, "DBG", LOGLEVEL_DEBUG);
+    }
+
+  public static void info (string msg)
+    {
+      log(msg, "INF", LOGLEVEL_INFO);
+    }
+
+  public static void warning (string msg)
+    {
+      log(msg, "WRN", LOGLEVEL_WARNING);
+    }
+
+  public static void error (string msg)
+    {
+      log(msg, "ERR", LOGLEVEL_ERROR);
+    }
+
+  public static void critical (string msg)
+    {
+      log(msg, "CRT", LOGLEVEL_CRITICAL);
+    }
+
+  private static void log (string msg, string loglevel_str, int loglevel)
+    {
+      if (loglevel < minimumLoglevel)
         return;
 
-      button = ApplicationLauncher.Instance.AddModApplication(
-        onClick,
-        onClick,
-        null,
-        null,
-        null,
-        null,
-        appScenes,
-        texture
-      );
-    }
+      string s = "[" + DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss.ffff") + "][" + loglevel_str + "] " + msg;
 
-  public void release ()
-    {
-      if (button == null)
-        return;
-
-      ApplicationLauncher.Instance.RemoveModApplication(button);
-      button = null;
-    }
-
-  private void onClick ()
-    {
-      Logging.debug("handling ToolbarButton Event: onClick");
-      callback();
+      // write to pyKOS log
+      logfile.WriteLine(s);
+      // write to KSP log
+      Console.WriteLine(s);
     }
 
 }

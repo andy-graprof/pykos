@@ -18,14 +18,14 @@
  *    along with this program.  If not, see <http://www.gnu.org/licenses/>.   *
  ******************************************************************************/
 
-using pykos.Util;
-using pykos.Gui;
-using pykos.Python;
+using PyKOS.Util;
+using PyKOS.Gui;
+using PyKOS.Python;
 
 using System;
 using UnityEngine;
 
-namespace pykos
+namespace PyKOS
 {
 
 public static class PyKOS

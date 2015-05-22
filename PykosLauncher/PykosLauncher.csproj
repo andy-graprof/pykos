@@ -7,8 +7,8 @@
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>{9403D987-911B-4401-B136-0AA5B7C690C4}</ProjectGuid>
     <OutputType>Library</OutputType>
-    <RootNamespace>pykosLauncher</RootNamespace>
-    <AssemblyName>pykosLauncher</AssemblyName>
+    <RootNamespace>PyKOS.Launcher</RootNamespace>
+    <AssemblyName>PykosLauncher</AssemblyName>
     <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
@@ -29,11 +29,6 @@
     <WarningLevel>4</WarningLevel>
     <ConsolePause>false</ConsolePause>
   </PropertyGroup>
-  <ItemGroup>
-    <Compile Include="AssemblyInfo.cs" />
-    <Compile Include="Launcher.cs" />
-    <Compile Include="Util\Logging.cs" />
-  </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>
     <Folder Include="Util\" />
@@ -46,5 +41,10 @@
     <Reference Include="UnityEngine">
       <HintPath>..\..\..\..\..\usr\local\share\KSP_linux\KSP_Data\Managed\UnityEngine.dll</HintPath>
     </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Util\Logging.cs" />
+    <Compile Include="AssemblyInfo.cs" />
+    <Compile Include="PykosLauncher.cs" />
   </ItemGroup>
 </Project>

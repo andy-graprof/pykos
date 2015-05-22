@@ -7,8 +7,8 @@
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>{614CA8CA-A49A-4414-BE87-EB1258944661}</ProjectGuid>
     <OutputType>Library</OutputType>
-    <RootNamespace>pykos</RootNamespace>
-    <AssemblyName>pykos</AssemblyName>
+    <RootNamespace>PyKOS</RootNamespace>
+    <AssemblyName>PyKOS</AssemblyName>
     <SynchReleaseVersion>false</SynchReleaseVersion>
     <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
   </PropertyGroup>
@@ -52,14 +52,14 @@
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="Assembly-CSharp">
-      <HintPath>..\..\..\..\usr\local\share\KSP_linux\KSP_Data\Managed\Assembly-CSharp.dll</HintPath>
+      <HintPath>..\..\..\..\..\usr\local\share\KSP_linux\KSP_Data\Managed\Assembly-CSharp.dll</HintPath>
     </Reference>
     <Reference Include="UnityEngine">
-      <HintPath>..\..\..\..\usr\local\share\KSP_linux\KSP_Data\Managed\UnityEngine.dll</HintPath>
+      <HintPath>..\..\..\..\..\usr\local\share\KSP_linux\KSP_Data\Managed\UnityEngine.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="libsteelpython_c\libsteelpython_c.cproj">
+    <ProjectReference Include="..\libsteelpython_c\libsteelpython_c.cproj">
       <Project>{0E07CD92-7FD4-4E15-9EA4-762487A037CC}</Project>
       <Name>libsteelpython_c</Name>
     </ProjectReference>

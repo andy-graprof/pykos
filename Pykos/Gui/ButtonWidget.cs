@@ -18,71 +18,35 @@
  *    along with this program.  If not, see <http://www.gnu.org/licenses/>.   *
  ******************************************************************************/
 
+using PyKOS.Util;
+
 using System;
-using System.IO;
+using UnityEngine;
 
-namespace pykosLauncher.Util
+namespace PyKOS.Gui
 {
 
-internal static class Logging
+public delegate void ButtonWidgetCallback ();
+
+public class ButtonWidget : Widget
 {
 
-  private static string logfilename = "pykos/pykosLauncher.log";
-  private static StreamWriter logfile;
+  private Rect dimensions;
+  private string caption = null;
+  private ButtonWidgetCallback callback = null;
 
-  public const int LOGLEVEL_NOTSET   =  0;
-  public const int LOGLEVEL_DEBUG    = 10;
-  public const int LOGLEVEL_INFO     = 20;
-  public const int LOGLEVEL_WARNING  = 30;
-  public const int LOGLEVEL_ERROR    = 40;
-  public const int LOGLEVEL_CRITICAL = 50;
-
-  public static int minimumLoglevel { get; set; }
-
-  static Logging ()
+  public ButtonWidget (MonoBehaviour _parent, float left, float top, float width, float height, string _caption, ButtonWidgetCallback _callback) : base(_parent)
     {
-      minimumLoglevel = LOGLEVEL_NOTSET;
+      dimensions = new Rect(left, top, width, height);
+      caption = _caption;
 
-      logfile = new StreamWriter(logfilename);
-      logfile.AutoFlush = true;
+      callback = _callback;
     }
 
-  public static void debug (string msg)
+  override public void redraw ()
     {
-      log(msg, "DBG", LOGLEVEL_DEBUG);
-    }
-
-  public static void info (string msg)
-    {
-      log(msg, "INF", LOGLEVEL_INFO);
-    }
-
-  public static void warning (string msg)
-    {
-      log(msg, "WRN", LOGLEVEL_WARNING);
-    }
-
-  public static void error (string msg)
-    {
-      log(msg, "ERR", LOGLEVEL_ERROR);
-    }
-
-  public static void critical (string msg)
-    {
-      log(msg, "CRT", LOGLEVEL_CRITICAL);
-    }
-
-  private static void log (string msg, string loglevel_str, int loglevel)
-    {
-      if (loglevel < minimumLoglevel)
-        return;
-
-      string s = "[" + DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss.ffff") + "][" + loglevel_str + "] " + msg;
-
-      // write to pyKOS log
-      logfile.WriteLine(s);
-      // write to KSP log
-      Console.WriteLine(s);
+      if (GUI.Button(dimensions, caption))
+        callback();
     }
 
 }

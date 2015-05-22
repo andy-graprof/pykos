@@ -18,27 +18,51 @@
  *    along with this program.  If not, see <http://www.gnu.org/licenses/>.   *
  ******************************************************************************/
 
-using pykos.Util;
+using PyKOS.Util;
+using PyKOS.Python;
 
 using System;
 using UnityEngine;
 
-namespace pykos.Gui
+namespace PyKOS.Gui
 {
 
-public class Widget
+public class ConsoleWidget : Widget
 {
 
-  protected MonoBehaviour parent = null;
+  private Rect dimensions;
+  private string input = "";
+  private Vector2 scroll = new Vector2(0, Mathf.Infinity);
 
-  public Widget (MonoBehaviour _parent)
+  private const float inputEditHeight = 20;
+
+  public ConsoleWidget (MonoBehaviour _parent, float left, float top, float width, float height) : base(_parent)
     {
-      parent = _parent;
+      dimensions = new Rect(left, top, width, height);
     }
 
-  virtual public void redraw ()
+  override public void redraw ()
     {
+      if (Event.current.type == EventType.KeyDown && Event.current.keyCode == KeyCode.Return)
+        {
+          Interpreter.execute(input);
+          input = "";
+          scroll = new Vector2(0, Mathf.Infinity);
+          Event.current.Use();
+        }
 
+      GUILayout.BeginArea(dimensions);
+      GUILayout.BeginVertical();
+      scroll = GUILayout.BeginScrollView(scroll, GUILayout.ExpandHeight(true));
+      GUILayout.TextArea(Interpreter.output, GUILayout.ExpandHeight(true));
+      GUILayout.EndScrollView();
+
+      GUILayout.BeginHorizontal();
+      GUILayout.Label(">>>", GUILayout.ExpandWidth(false));
+      input = GUILayout.TextArea(input, GUILayout.ExpandWidth(true));
+      GUILayout.EndHorizontal();
+      GUILayout.EndVertical();
+      GUILayout.EndArea();
     }
 
 }

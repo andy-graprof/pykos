@@ -18,14 +18,14 @@
  *    along with this program.  If not, see <http://www.gnu.org/licenses/>.   *
  ******************************************************************************/
 
-using pykos.Gui;
-using pykos.Util;
+using PyKOS.Gui;
+using PyKOS.Util;
 
 using System;
 using System.Linq;
 using UnityEngine;
 
-namespace pykos
+namespace PyKOS
 {
 
 public class Window : MonoBehaviour

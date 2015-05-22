@@ -18,71 +18,58 @@
  *    along with this program.  If not, see <http://www.gnu.org/licenses/>.   *
  ******************************************************************************/
 
+using PyKOS.Util;
+
 using System;
-using System.IO;
+using System.Collections;
 
-namespace pykos.Util
+namespace PyKOS.Gui
 {
 
-internal static class Logging
+internal class GuiManager
 {
 
-  private static string logfilename = "pykos/pykos.log";
-  private static StreamWriter logfile;
+  public static GuiManager instance { get; set; }
 
-  public const int LOGLEVEL_NOTSET   =  0;
-  public const int LOGLEVEL_DEBUG    = 10;
-  public const int LOGLEVEL_INFO     = 20;
-  public const int LOGLEVEL_WARNING  = 30;
-  public const int LOGLEVEL_ERROR    = 40;
-  public const int LOGLEVEL_CRITICAL = 50;
+  public static ArrayList windowList = new ArrayList();
 
-  public static int minimumLoglevel { get; set; }
-
-  static Logging ()
+  public static void initialize ()
     {
-      minimumLoglevel = LOGLEVEL_NOTSET;
-
-      logfile = new StreamWriter(logfilename);
-      logfile.AutoFlush = true;
+      Logging.debug("initializing GuiManager");
+      instance = new GuiManager();
     }
 
-  public static void debug (string msg)
+  private ToolbarButton toolbarButton = null;
+  private ConsoleWindow consoleWindow = null;
+
+  private GuiManager ()
     {
-      log(msg, "DBG", LOGLEVEL_DEBUG);
+      toolbarButton = new ToolbarButton(onToolbarButtonPressed);
+      consoleWindow = new ConsoleWindow(50, 50, 400, 300, "pyKOS");
+
+      Logging.debug("registering GuiManager Event: onGUIApplicationLauncherReady");
+      GameEvents.onGUIApplicationLauncherReady.Add(onGUIApplicationLauncherReady);
+      Logging.debug("registering GuiManager Event: onGUIApplicationLauncherDestroyed");
+      GameEvents.onGUIApplicationLauncherDestroyed.Add(onGUIApplicationLauncherDestroyed);
     }
 
-  public static void info (string msg)
+  private void onGUIApplicationLauncherReady ()
     {
-      log(msg, "INF", LOGLEVEL_INFO);
+      Logging.debug("handling GuiManager Event: onGUIApplicationLauncherReady");
+      toolbarButton.register();
+      consoleWindow.register();
     }
 
-  public static void warning (string msg)
+  private void onGUIApplicationLauncherDestroyed ()
     {
-      log(msg, "WRN", LOGLEVEL_WARNING);
+      Logging.debug("handling GuiManager Event: onGUIApplicationLauncherDestroyed");
+      toolbarButton.release();
+      consoleWindow.release();
     }
 
-  public static void error (string msg)
+  public void onToolbarButtonPressed ()
     {
-      log(msg, "ERR", LOGLEVEL_ERROR);
-    }
-
-  public static void critical (string msg)
-    {
-      log(msg, "CRT", LOGLEVEL_CRITICAL);
-    }
-
-  private static void log (string msg, string loglevel_str, int loglevel)
-    {
-      if (loglevel < minimumLoglevel)
-        return;
-
-      string s = "[" + DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss.ffff") + "][" + loglevel_str + "] " + msg;
-
-      // write to pyKOS log
-      logfile.WriteLine(s);
-      // write to KSP log
-      Console.WriteLine(s);
+      consoleWindow.toggleVisibility();
     }
 
 }

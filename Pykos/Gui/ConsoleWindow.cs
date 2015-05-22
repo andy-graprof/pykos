@@ -18,35 +18,58 @@
  *    along with this program.  If not, see <http://www.gnu.org/licenses/>.   *
  ******************************************************************************/
 
-using pykos.Util;
+using PyKOS.Util;
 
 using System;
+using System.Collections;
 using UnityEngine;
 
-namespace pykos.Gui
+namespace PyKOS.Gui
 {
 
-public delegate void ButtonWidgetCallback ();
-
-public class ButtonWidget : Widget
+public class ConsoleWindow : Window
 {
 
-  private Rect dimensions;
-  private string caption = null;
-  private ButtonWidgetCallback callback = null;
+  private ArrayList children = new ArrayList();
 
-  public ButtonWidget (MonoBehaviour _parent, float left, float top, float width, float height, string _caption, ButtonWidgetCallback _callback) : base(_parent)
+  private const float borderMargin = 5;
+  private const float titleMargin = 20;
+  private const float closeButtonWidth = 100;
+  private const float closeButtonHeight = 20;
+
+  public ConsoleWindow (float left, float top, float width, float height, string title) : base(left, top, width, height, title,
+      new GameScenes[] { GameScenes.FLIGHT, GameScenes.SPACECENTER, GameScenes.EDITOR, GameScenes.TRACKSTATION })
     {
-      dimensions = new Rect(left, top, width, height);
-      caption = _caption;
-
-      callback = _callback;
+      children.Add(new ConsoleWidget(this,
+        borderMargin,
+        titleMargin + borderMargin,
+        width - borderMargin - borderMargin,
+        height - titleMargin - borderMargin - borderMargin - closeButtonHeight - borderMargin
+      ));
+      children.Add(new ButtonWidget(this,
+        width - borderMargin - closeButtonWidth,
+        height - borderMargin - closeButtonHeight,
+        closeButtonWidth,
+        closeButtonHeight,
+        "Close",
+        onCloseButtonClicked
+      ));
     }
 
-  override public void redraw ()
+  public void toggleVisibility ()
     {
-      if (GUI.Button(dimensions, caption))
-        callback();
+      if (visible) hide(); else show();
+    }
+
+  override protected void redraw ()
+    {
+      foreach (Widget child in children)
+        child.redraw();
+    }
+
+  private void onCloseButtonClicked ()
+    {
+      hide();
     }
 
 }
