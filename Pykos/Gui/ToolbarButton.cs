@@ -47,7 +47,7 @@ internal class ToolbarButton
   public ToolbarButton (ToolbarButtonCallback _callback)
     {
       callback = _callback;
-      texture = GameDatabase.Instance.GetTexture("pykos/resources/textures/toolbar-button",false);
+      texture = GameDatabase.Instance.GetTexture("pykos/textures/toolbar-button",false);
     }
 
   public void register ()
