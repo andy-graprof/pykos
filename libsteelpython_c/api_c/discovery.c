@@ -48,5 +48,5 @@ pykos_call (__unused PyObject *self, PyObject *args)
   PykosCallback fptr = PyCapsule_GetPointer(o, NULL);
 
   const char *res = fptr(a);
-  return PyString_FromString(res ? res : "");
+  return PyString_FromString(res ? res : "null");
 }

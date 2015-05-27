@@ -14,5 +14,7 @@
   <ItemGroup>
     <None Include="pykos\__init__.py" />
     <None Include="pykos\util.py" />
+    <None Include="pykos\factory.py" />
+    <None Include="pykos\log.py" />
   </ItemGroup>
 </Project>

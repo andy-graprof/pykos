@@ -20,6 +20,9 @@
 
 using System;
 using System.IO;
+using System.Collections.Generic;
+
+using Newtonsoft.Json;
 
 namespace PyKOS.Util
 {
@@ -49,38 +52,58 @@ internal static class Logging
 
   public static string debug (string msg)
     {
-      log(msg, "DBG", LOGLEVEL_DEBUG);
-      return null;
+      return log(msg, "DBG", LOGLEVEL_DEBUG);
+    }
+    
+  public static string debug_json (string args)
+    {
+      return debug(JsonConvert.DeserializeObject<List<string>>(args)[0]);
     }
 
   public static string info (string msg)
     {
-      log(msg, "INF", LOGLEVEL_INFO);
-      return null;
+      return log(msg, "INF", LOGLEVEL_INFO);
+    }
+
+  public static string info_json (string args)
+    {
+      return info(JsonConvert.DeserializeObject<List<string>>(args)[0]);
     }
 
   public static string warning (string msg)
     {
-      log(msg, "WRN", LOGLEVEL_WARNING);
-      return null;
+      return log(msg, "WRN", LOGLEVEL_WARNING);
+    }
+
+  public static string warning_json (string args)
+    {
+      return warning(JsonConvert.DeserializeObject<List<string>>(args)[0]);
     }
 
   public static string error (string msg)
     {
-      log(msg, "ERR", LOGLEVEL_ERROR);
-      return null;
+      return log(msg, "ERR", LOGLEVEL_ERROR);
+    }
+
+  public static string error_json (string args)
+    {
+      return error(JsonConvert.DeserializeObject<List<string>>(args)[0]);
     }
 
   public static string critical (string msg)
     {
-      log(msg, "CRT", LOGLEVEL_CRITICAL);
-      return null;
+      return log(msg, "CRT", LOGLEVEL_CRITICAL);
     }
 
-  private static void log (string msg, string loglevel_str, int loglevel)
+  public static string critical_json (string args)
+    {
+      return critical(JsonConvert.DeserializeObject<List<string>>(args)[0]);
+    }
+
+  private static string log (string msg, string loglevel_str, int loglevel)
     {
       if (loglevel < minimumLoglevel)
-        return;
+        return null;
 
       string s = "[" + DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss.ffff") + "][" + loglevel_str + "] " + msg;
 
@@ -88,6 +111,8 @@ internal static class Logging
       logfile.WriteLine(s);
       // write to KSP log
       Console.WriteLine(s);
+      
+      return null;
     }
 
 }

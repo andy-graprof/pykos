@@ -59,7 +59,7 @@ public static class Interpreter
   private static string line = "";
   public static string onPutcharCallback (string s)
     {
-      char c = s[0];
+      char c = s[0]; // this callback is not jsonified
       if (c == '\n')
         {
           lineBuffer.Enqueue(line);

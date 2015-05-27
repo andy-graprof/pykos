@@ -57,6 +57,9 @@
     <Reference Include="UnityEngine">
       <HintPath>..\..\..\..\..\usr\local\share\KSP_linux\KSP_Data\Managed\UnityEngine.dll</HintPath>
     </Reference>
+    <Reference Include="Newtonsoft.Json">
+      <HintPath>..\thirdparty\Json.NET\Newtonsoft.Json.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\libsteelpython_c\libsteelpython_c.cproj">
