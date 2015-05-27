@@ -28,12 +28,9 @@
 static PyMethodDef _pykosapi[] = {
 
   // output callbacks
-  {"pykosOutput",           pykosOutput,            METH_VARARGS, "pass a char of output back upwards"},
-  {"pykosLoggingDebgug",    pykosLoggingDebug,      METH_VARARGS, "Log a message of severity DEBUG"},
-  {"pykosLoggingInfo",      pykosLoggingInfo,       METH_VARARGS, "Log a message of severity INFO"},
-  {"pykosLoggingWarning",   pykosLoggingWarning,    METH_VARARGS, "Log a message of severity WARNING"},
-  {"pykosLoggingError",     pykosLoggingError,      METH_VARARGS, "Log a message of severity ERROR"},
-  {"pykosLoggingCritical",  pykosLoggingCritical,   METH_VARARGS, "Log a message of severity Critical"},
+  {"putchar",   pykos_putchar,   METH_VARARGS, "pass a char of output back upwards"},
+  {"discover",  pykos_discover,  METH_VARARGS, "try to get a function object for the given name"},
+  {"call",      pykos_call,      METH_VARARGS, "call the discovered function object"},
 
   // end of callbacks
   {NULL, NULL, 0, NULL}

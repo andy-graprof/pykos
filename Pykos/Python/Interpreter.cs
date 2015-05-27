@@ -42,7 +42,6 @@ public static class Interpreter
 
   [DllImport("pykos/libs/libsteelpython_c.so")]
   static extern void libsteelpython_initialize (PykosDiscoveryCallback pykosDiscoveryCallback);
-
   public static void initialize ()
     {
       Logging.info("initializing Interpreter");
@@ -58,7 +57,7 @@ public static class Interpreter
     }
 
   private static string line = "";
-  public static string onOutputCallback (string s)
+  public static string onPutcharCallback (string s)
     {
       char c = s[0];
       if (c == '\n')
@@ -70,11 +69,11 @@ public static class Interpreter
         line += c;
       return null;
     }
-    
+
   private static PykosCallback onDiscoveryCallback (string type, string method)
     {
       Logging.info("discovery requested for '" + type + "." + method + "'");
-    
+
       try
         {
           Type t = Type.GetType(type);

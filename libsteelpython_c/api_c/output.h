@@ -24,7 +24,7 @@
 
 #include "api_c/discovery.h"
 
-/* _pykosapi.pykosOutput
+/* _pykosapi.putchar
  *
  * This function is used for printing the output of pythong scripts in the
  * pykos console window rendered into KSP.
@@ -32,60 +32,15 @@
  * params:
  *   c - a character to be printed in the KSP console window
  */
-PyObject* pykosOutput (PyObject *self, PyObject *args);
-void pykosOutput_c (char c);
+PyObject* pykos_putchar (PyObject *self, PyObject *args);
 
-
-/* _pykosapi.pykosLoggingDebug
- *
- * This function is used for writing to the pykos logfile with the severity
- * level DEBUG.
+/* similar to _pykosapi.putchar, but available from the c context
  *
  * params:
- *   str - a string to be logged in pykos.log
+ *   c - a character to be printed in the KSP console window
  */
-PyObject *pykosLoggingDebug (PyObject *self, PyObject *args);
-
-/* _pykosapi.pykosLoggingInfo
- *
- * This function is used for writing to the pykos logfile with the severity
- * level INFO.
- *
- * params:
- *   str - a string to be logged in pykos.log
- */
-PyObject *pykosLoggingInfo (PyObject *self, PyObject *args);
-
-/* _pykosapi.pykosLoggingWarning
- *
- * This function is used for writing to the pykos logfile with the severity
- * level WARNING.
- *
- * params:
- *   str - a string to be logged in pykos.log
- */
-PyObject *pykosLoggingWarning (PyObject *self, PyObject *args);
-
-/* _pykosapi.pykosLoggingError
- *
- * This function is used for writing to the pykos logfile with the severity
- * level ERROR.
- *
- * params:
- *   str - a string to be logged in pykos.log
- */
-PyObject *pykosLoggingError (PyObject *self, PyObject *args);
-
-/* _pykosapi.pykosLoggingCritical
- *
- * This function is used for writing to the pykos logfile with the severity
- * level CRITICAL.
- *
- * params:
- *   str - a string to be logged in pykos.log
- */
-PyObject *pykosLoggingCritical (PyObject *self, PyObject *args);
+void pykos_putchar_c (char c);
 
 /* discover the callbacks for the functions in the output module
  */
-void output_discoverCallbacks (void);
+void output_discover (void);

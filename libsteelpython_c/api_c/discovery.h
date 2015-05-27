@@ -25,4 +25,30 @@
 typedef const char*(*PykosCallback)(const char *args);
 typedef PykosCallback(*PykosDiscoveryCallback)(const char *type, const char *method);
 
-extern PykosDiscoveryCallback discovery;
+extern PykosDiscoveryCallback discover;
+
+/* _pykosapi.discover
+ *
+ * Try and discover a function object from the csharp environment
+ *
+ * params:
+ *   type - a string representing a type
+ *   method - a string representing a method in the given type
+ *
+ * returns:
+ *   a capsule to be passed to _pykosapi.call on success, NULL otherwise
+ */
+PyObject* pykos_discover (PyObject *self, PyObject *args);
+
+/* _pykosapi.call
+ *
+ * Execute a function discovered by _pykosapi.discover
+ *
+ * params:
+ *   o - a capsule object reurned by _pykosapi.discover
+ *   a - a string representing the arguments to the function
+ *
+ * returns:
+ *   a string representing the result of the call
+ */
+PyObject* pykos_call (PyObject *self, PyObject *args);

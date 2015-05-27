@@ -7,16 +7,25 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PykosLauncher", "PykosLaunc
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Pykos", "Pykos\Pykos.csproj", "{614CA8CA-A49A-4414-BE87-EB1258944661}"
 EndProject
+Project("{9344bdbb-3e7f-41fc-a0dd-8665d75ee146}") = "pykosapi_py", "pykosapi_py\pykosapi_py.mdproj", "{417855E8-1632-4BFF-A5EA-ED195696C165}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
 		Release|Any CPU = Release|Any CPU
+		Default|Any CPU = Default|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
 		{0E07CD92-7FD4-4E15-9EA4-762487A037CC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{0E07CD92-7FD4-4E15-9EA4-762487A037CC}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{0E07CD92-7FD4-4E15-9EA4-762487A037CC}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{0E07CD92-7FD4-4E15-9EA4-762487A037CC}.Release|Any CPU.Build.0 = Release|Any CPU
+		{417855E8-1632-4BFF-A5EA-ED195696C165}.Debug|Any CPU.ActiveCfg = Default|Any CPU
+		{417855E8-1632-4BFF-A5EA-ED195696C165}.Debug|Any CPU.Build.0 = Default|Any CPU
+		{417855E8-1632-4BFF-A5EA-ED195696C165}.Default|Any CPU.ActiveCfg = Default|Any CPU
+		{417855E8-1632-4BFF-A5EA-ED195696C165}.Default|Any CPU.Build.0 = Default|Any CPU
+		{417855E8-1632-4BFF-A5EA-ED195696C165}.Release|Any CPU.ActiveCfg = Default|Any CPU
+		{417855E8-1632-4BFF-A5EA-ED195696C165}.Release|Any CPU.Build.0 = Default|Any CPU
 		{614CA8CA-A49A-4414-BE87-EB1258944661}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{614CA8CA-A49A-4414-BE87-EB1258944661}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{614CA8CA-A49A-4414-BE87-EB1258944661}.Release|Any CPU.ActiveCfg = Release|Any CPU

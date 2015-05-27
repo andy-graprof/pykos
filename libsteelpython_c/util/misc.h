@@ -51,7 +51,7 @@
 #  define __unlikely(X) (X)
 #endif
 
-extern void pykosLoggingError_c(const char *src);
+extern void pykos_logging_error_c(const char *src);
 
 // error printing macros
 #define __check(C) \
@@ -64,14 +64,16 @@ extern void pykosLoggingError_c(const char *src);
           int length = snprintf(NULL, 0, "steelpython:%s:%u: check failed: %s: %s", __FILE__, __LINE__, # C, strerror(errnum)); \
           char *str = malloc(length + 1); \
           snprintf(str, length + 1, "steelpython:%s:%u: check failed: %s: %s", __FILE__, __LINE__, # C, strerror(errnum)); \
-          pykosLoggingError_c(str); \
+          pykos_logging_error_c(str); \
+          free(str); \
         } \
       else \
         { \
           int length = snprintf(NULL, 0, "steelpython:%s:%u: check failed: %s", __FILE__, __LINE__, # C); \
           char *str = malloc(length + 1); \
           snprintf(str, length + 1, "steelpython:%s:%u: check failed: %s", __FILE__, __LINE__, # C); \
-          pykosLoggingError_c(str); \
+          pykos_logging_error_c(str); \
+          free(str); \
         } \
       errno = errnum; \
     } \

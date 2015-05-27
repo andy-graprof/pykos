@@ -20,4 +20,33 @@
 
 #include "discovery.h"
 
-PykosDiscoveryCallback discovery = NULL;
+PykosDiscoveryCallback discover = NULL;
+
+PyObject*
+pykos_discover (__unused PyObject *self, PyObject *args)
+{
+  const char *type;
+  const char *method;
+
+  if(!PyArg_ParseTuple(args, "ss", &type, &method))
+    return NULL;
+
+  void *fptr = discover(type, method);
+
+  return PyCapsule_New(fptr, NULL, NULL);
+}
+
+PyObject*
+pykos_call (__unused PyObject *self, PyObject *args)
+{
+  PyObject *o;
+  const char *a;
+
+  if(!PyArg_ParseTuple(args, "Os", &o, &a))
+    return NULL;
+
+  PykosCallback fptr = PyCapsule_GetPointer(o, NULL);
+
+  const char *res = fptr(a);
+  return PyString_FromString(res ? res : "");
+}

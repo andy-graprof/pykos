@@ -23,9 +23,9 @@
 void
 libsteelpython_initialize (PykosDiscoveryCallback callback)
 {
-  discovery = callback;
+  discover = callback;
 
-  output_discoverCallbacks();
+  output_discover();
 
   Py_SetProgramName("pykos");
   Py_Initialize();
@@ -33,53 +33,36 @@ libsteelpython_initialize (PykosDiscoveryCallback callback)
   // errno has been polluted by Py_SetProgramName and Py_Initialize
   errno = 0;
 
-  // get reference to __main__ module
-  PyObject *mod_main = PyImport_AddModule("__main__");
-  __check(NULL != mod_main);
+  // include current directory in import path
+  PyObject *path = PySys_GetObject("path");
+  __check(NULL != path);
+  PyObject *api = PyString_FromString("./pykos/api");
+  __check(NULL != api);
+  PyObject *usr = PyString_FromString("./pykos");
+  __check(NULL != usr);
+  __check(0 == PyList_Insert(path, 0, api));
+  __check(0 == PyList_Insert(path, 0, usr));
 
-  // import and get references to used modules
-  PyObject *mod_sys = PyImport_ImportModule("sys");
-  __check(NULL != mod_sys);
-
-  // create and get references to provided modules
-  PyObject *mod_pykosapi = Py_InitModule("_pykosapi", _pykosapi);
-  __check(NULL != mod_pykosapi);
-
-  // add referenced modules to __main__
-  __check(0 == PyModule_AddObject(mod_main, "_pykosapi", mod_pykosapi));
-  __check(0 == PyModule_AddObject(mod_main, "sys", mod_sys));
-
-  // create class for stdout / stderr capture
-
-  // capture stdout / stderr
-  const char *preamble =
-    "class CatchOutErr:\n"
-    "  def write(self, txt):\n"
-    "    for c in txt:\n"
-    "      _pykosapi.pykosOutput(str(c))\n"
-    "catchOutErr = CatchOutErr()\n"
-    "sys.stdout = catchOutErr\n"
-    "sys.stderr = catchOutErr\n";
-
-  PyRun_SimpleString(preamble);
+  __check(NULL != Py_InitModule("_pykosapi", _pykosapi));
+  __check(NULL != PyImport_ImportModule("pykos"));
 }
 
 void
 libsteelpython_execute (const char *code)
 {
-  pykosOutput_c('>');
-  pykosOutput_c('>');
-  pykosOutput_c('>');
-  pykosOutput_c(' ');
+  pykos_putchar_c('>');
+  pykos_putchar_c('>');
+  pykos_putchar_c('>');
+  pykos_putchar_c(' ');
 
   const char *c = code;
   while (*c)
     {
-      pykosOutput_c(*c);
+      pykos_putchar_c(*c);
       ++c;
     }
 
-  pykosOutput_c('\n');
+  pykos_putchar_c('\n');
 
   PyRun_SimpleString(code);
 }

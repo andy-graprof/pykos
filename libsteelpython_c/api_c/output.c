@@ -20,117 +20,40 @@
 
 #include "output.h"
 
-static PykosCallback pykosOutputCallback = NULL;
+static PykosCallback pykos_putchar_callback = NULL;
 
 PyObject*
-pykosOutput (__unused PyObject *self, PyObject *args)
+pykos_putchar (__unused PyObject *self, PyObject *args)
 {
-  const char *out;
+  char out;
 
-  if(!PyArg_ParseTuple(args, "s", &out))
+  if(!PyArg_ParseTuple(args, "c", &out))
     return NULL;
 
-  pykosOutputCallback(out);
+  pykos_putchar_c(out);
 
   Py_RETURN_NONE;
 }
 
 void
-pykosOutput_c (char c)
+pykos_putchar_c (char c)
 {
   char out[] = { c, '\0' };
-  pykosOutputCallback(out);
+  pykos_putchar_callback(out);
 }
 
-static PykosCallback pykosLoggingDebugCallback = NULL;
+static PykosCallback pykos_logging_error_callback = NULL;
 
-PyObject*
-pykosLoggingDebug (__unused PyObject *self, PyObject *args)
+void
+pykos_logging_error_c (const char *str)
 {
-  const char *out;
-
-  if(!PyArg_ParseTuple(args, "s", &out))
-    return NULL;
-
-  pykosLoggingDebugCallback(out);
-
-  Py_RETURN_NONE;
-}
-
-static PykosCallback pykosLoggingInfoCallback = NULL;
-
-PyObject*
-pykosLoggingInfo (__unused PyObject *self, PyObject *args)
-{
-  const char *out;
-
-  if(!PyArg_ParseTuple(args, "s", &out))
-    return NULL;
-
-  pykosLoggingInfoCallback(out);
-
-  Py_RETURN_NONE;
-}
-
-static PykosCallback pykosLoggingWarningCallback = NULL;
-
-PyObject*
-pykosLoggingWarning (__unused PyObject *self, PyObject *args)
-{
-  const char *out;
-
-  if(!PyArg_ParseTuple(args, "s", &out))
-    return NULL;
-
-  pykosLoggingWarningCallback(out);
-
-  Py_RETURN_NONE;
-}
-
-static PykosCallback pykosLoggingErrorCallback = NULL;
-
-PyObject*
-pykosLoggingError (__unused PyObject *self, PyObject *args)
-{
-  const char *out;
-
-  if(!PyArg_ParseTuple(args, "s", &out))
-    return NULL;
-
-  pykosLoggingErrorCallback(out);
-
-  Py_RETURN_NONE;
+  pykos_logging_error_callback(str);
 }
 
 void
-pykosLoggingError_c (const char *str)
+output_discover(void)
 {
-  pykosLoggingErrorCallback(str);
-}
+  __check(NULL != (pykos_putchar_callback = discover("PyKOS.Python.Interpreter", "onPutcharCallback")));
 
-static PykosCallback pykosLoggingCriticalCallback = NULL;
-
-PyObject*
-pykosLoggingCritical (__unused PyObject *self, PyObject *args)
-{
-  const char *out;
-
-  if(!PyArg_ParseTuple(args, "s", &out))
-    return NULL;
-
-  pykosLoggingCriticalCallback(out);
-
-  Py_RETURN_NONE;
-}
-
-void
-output_discoverCallbacks(void)
-{
-  __check(NULL != (pykosOutputCallback = discovery("PyKOS.Python.Interpreter", "onOutputCallback")));
-  
-  __check(NULL != (pykosLoggingDebugCallback = discovery("PyKOS.Util.Logging", "debug")));
-  __check(NULL != (pykosLoggingInfoCallback = discovery("PyKOS.Util.Logging", "info")));
-  __check(NULL != (pykosLoggingWarningCallback = discovery("PyKOS.Util.Logging", "warning")));
-  __check(NULL != (pykosLoggingErrorCallback = discovery("PyKOS.Util.Logging", "error")));
-  __check(NULL != (pykosLoggingCriticalCallback = discovery("PyKOS.Util.Logging", "critical")));
+  __check(NULL != (pykos_logging_error_callback = discover("PyKOS.Util.Logging", "error")));
 }
