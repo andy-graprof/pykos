@@ -22,14 +22,17 @@ using PyKOS.Util;
 
 using System;
 using System.IO;
+using System.Reflection;
 using System.Collections.Generic;
 using System.Runtime.InteropServices;
 
 namespace PyKOS.Python
 {
 
-public delegate void TPykosLoggingCallback (string str);
 public delegate void TPykosOutputCallback (char c);
+
+public delegate string PykosCallback (string args);
+public delegate PykosCallback PykosDiscoveryCallback (string type, string method);
 
 public static class Interpreter
 {
@@ -38,32 +41,13 @@ public static class Interpreter
   public static string output { get { return String.Join("\n", lineBuffer.ToArray()); } }
 
   [DllImport("pykos/libs/libsteelpython_c.so")]
-  static extern void libsteelpython_registerOutputCallbacks (
-    TPykosOutputCallback pykosOutputCallback,
-    TPykosLoggingCallback pykosLoggingDebugCallback,
-    TPykosLoggingCallback pykosLoggingInfoCallback,
-    TPykosLoggingCallback pykosLoggingWarningCallback,
-    TPykosLoggingCallback pykosLoggingErrorCallback,
-    TPykosLoggingCallback pykosLoggingCriticalCallback
-  );
-
-  [DllImport("pykos/libs/libsteelpython_c.so")]
-  static extern void libsteelpython_initialize ();
+  static extern void libsteelpython_initialize (PykosDiscoveryCallback pykosDiscoveryCallback);
 
   public static void initialize ()
     {
       Logging.info("initializing Interpreter");
 
-      libsteelpython_registerOutputCallbacks(
-        onOutputCallback,
-        Logging.debug,
-        Logging.info,
-        Logging.warning,
-        Logging.error,
-        Logging.critical
-      );
-
-      libsteelpython_initialize();
+      libsteelpython_initialize(onDiscoveryCallback);
     }
 
   [DllImport("pykos/libs/libsteelpython_c.so")]
@@ -74,8 +58,9 @@ public static class Interpreter
     }
 
   private static string line = "";
-  public static void onOutputCallback (char c)
+  public static string onOutputCallback (string s)
     {
+      char c = s[0];
       if (c == '\n')
         {
           lineBuffer.Enqueue(line);
@@ -83,6 +68,24 @@ public static class Interpreter
         }
       else if (c != '\r')
         line += c;
+      return null;
+    }
+    
+  private static PykosCallback onDiscoveryCallback (string type, string method)
+    {
+      Logging.info("discovery requested for '" + type + "." + method + "'");
+    
+      try
+        {
+          Type t = Type.GetType(type);
+          MethodInfo m = t.GetMethod(method);
+          return (PykosCallback)(Delegate.CreateDelegate(typeof(PykosCallback), m));
+        }
+      catch (Exception e)
+        {
+          Logging.error("discovery failed for '" + type + "." + method + "': " + e.ToString());
+          return null;
+        }
     }
 
 }

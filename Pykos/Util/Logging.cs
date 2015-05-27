@@ -47,29 +47,34 @@ internal static class Logging
       logfile.AutoFlush = true;
     }
 
-  public static void debug (string msg)
+  public static string debug (string msg)
     {
       log(msg, "DBG", LOGLEVEL_DEBUG);
+      return null;
     }
 
-  public static void info (string msg)
+  public static string info (string msg)
     {
       log(msg, "INF", LOGLEVEL_INFO);
+      return null;
     }
 
-  public static void warning (string msg)
+  public static string warning (string msg)
     {
       log(msg, "WRN", LOGLEVEL_WARNING);
+      return null;
     }
 
-  public static void error (string msg)
+  public static string error (string msg)
     {
       log(msg, "ERR", LOGLEVEL_ERROR);
+      return null;
     }
 
-  public static void critical (string msg)
+  public static string critical (string msg)
     {
       log(msg, "CRT", LOGLEVEL_CRITICAL);
+      return null;
     }
 
   private static void log (string msg, string loglevel_str, int loglevel)

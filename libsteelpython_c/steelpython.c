@@ -21,8 +21,12 @@
 #include "steelpython.h"
 
 void
-libsteelpython_initialize (void)
+libsteelpython_initialize (PykosDiscoveryCallback callback)
 {
+  discovery = callback;
+
+  output_discoverCallbacks();
+
   Py_SetProgramName("pykos");
   Py_Initialize();
 
@@ -52,32 +56,30 @@ libsteelpython_initialize (void)
     "class CatchOutErr:\n"
     "  def write(self, txt):\n"
     "    for c in txt:\n"
-    "      _pykosapi.pykosOutput(c)\n"
+    "      _pykosapi.pykosOutput(str(c))\n"
     "catchOutErr = CatchOutErr()\n"
     "sys.stdout = catchOutErr\n"
     "sys.stderr = catchOutErr\n";
 
   PyRun_SimpleString(preamble);
-
-
 }
 
 void
 libsteelpython_execute (const char *code)
 {
-  pykosOutputCallback('>');
-  pykosOutputCallback('>');
-  pykosOutputCallback('>');
-  pykosOutputCallback(' ');
+  pykosOutput_c('>');
+  pykosOutput_c('>');
+  pykosOutput_c('>');
+  pykosOutput_c(' ');
 
   const char *c = code;
   while (*c)
     {
-      pykosOutputCallback(*c);
+      pykosOutput_c(*c);
       ++c;
     }
 
-  pykosOutputCallback('\n');
+  pykosOutput_c('\n');
 
   PyRun_SimpleString(code);
 }

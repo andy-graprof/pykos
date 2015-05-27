@@ -43,11 +43,13 @@
   <ItemGroup>
     <Compile Include="steelpython.c" />
     <Compile Include="api_c\output.c" />
+    <Compile Include="api_c\discovery.c" />
   </ItemGroup>
   <ItemGroup>
     <None Include="steelpython.h" />
     <None Include="util\misc.h" />
     <None Include="api_c\output.h" />
+    <None Include="api_c\discovery.h" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="util\" />

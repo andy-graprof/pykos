@@ -20,14 +20,14 @@
 
 #include "output.h"
 
-TPykosOutputCallback pykosOutputCallback = NULL;
+static PykosCallback pykosOutputCallback = NULL;
 
 PyObject*
 pykosOutput (__unused PyObject *self, PyObject *args)
 {
-  char out;
+  const char *out;
 
-  if(!PyArg_ParseTuple(args, "c", &out))
+  if(!PyArg_ParseTuple(args, "s", &out))
     return NULL;
 
   pykosOutputCallback(out);
@@ -35,7 +35,14 @@ pykosOutput (__unused PyObject *self, PyObject *args)
   Py_RETURN_NONE;
 }
 
-TPykosLoggingCallback pykosLoggingDebugCallback = NULL;
+void
+pykosOutput_c (char c)
+{
+  char out[] = { c, '\0' };
+  pykosOutputCallback(out);
+}
+
+static PykosCallback pykosLoggingDebugCallback = NULL;
 
 PyObject*
 pykosLoggingDebug (__unused PyObject *self, PyObject *args)
@@ -50,7 +57,7 @@ pykosLoggingDebug (__unused PyObject *self, PyObject *args)
   Py_RETURN_NONE;
 }
 
-TPykosLoggingCallback pykosLoggingInfoCallback = NULL;
+static PykosCallback pykosLoggingInfoCallback = NULL;
 
 PyObject*
 pykosLoggingInfo (__unused PyObject *self, PyObject *args)
@@ -65,7 +72,7 @@ pykosLoggingInfo (__unused PyObject *self, PyObject *args)
   Py_RETURN_NONE;
 }
 
-TPykosLoggingCallback pykosLoggingWarningCallback = NULL;
+static PykosCallback pykosLoggingWarningCallback = NULL;
 
 PyObject*
 pykosLoggingWarning (__unused PyObject *self, PyObject *args)
@@ -80,7 +87,7 @@ pykosLoggingWarning (__unused PyObject *self, PyObject *args)
   Py_RETURN_NONE;
 }
 
-TPykosLoggingCallback pykosLoggingErrorCallback = NULL;
+static PykosCallback pykosLoggingErrorCallback = NULL;
 
 PyObject*
 pykosLoggingError (__unused PyObject *self, PyObject *args)
@@ -101,7 +108,7 @@ pykosLoggingError_c (const char *str)
   pykosLoggingErrorCallback(str);
 }
 
-TPykosLoggingCallback pykosLoggingCriticalCallback = NULL;
+static PykosCallback pykosLoggingCriticalCallback = NULL;
 
 PyObject*
 pykosLoggingCritical (__unused PyObject *self, PyObject *args)
@@ -117,18 +124,13 @@ pykosLoggingCritical (__unused PyObject *self, PyObject *args)
 }
 
 void
-libsteelpython_registerOutputCallbacks(
-  TPykosOutputCallback  _pykosOutputCallback,
-  TPykosLoggingCallback _pykosLoggingDebugCallback,
-  TPykosLoggingCallback _pykosLoggingInfoCallback,
-  TPykosLoggingCallback _pykosLoggingWarningCallback,
-  TPykosLoggingCallback _pykosLoggingErrorCallback,
-  TPykosLoggingCallback _pykosLoggingCriticalCallback)
+output_discoverCallbacks(void)
 {
-  pykosOutputCallback           = _pykosOutputCallback;
-  pykosLoggingDebugCallback     = _pykosLoggingDebugCallback;
-  pykosLoggingInfoCallback      = _pykosLoggingInfoCallback;
-  pykosLoggingWarningCallback   = _pykosLoggingWarningCallback;
-  pykosLoggingErrorCallback     = _pykosLoggingErrorCallback;
-  pykosLoggingCriticalCallback  = _pykosLoggingCriticalCallback;
+  __check(NULL != (pykosOutputCallback = discovery("PyKOS.Python.Interpreter", "onOutputCallback")));
+  
+  __check(NULL != (pykosLoggingDebugCallback = discovery("PyKOS.Util.Logging", "debug")));
+  __check(NULL != (pykosLoggingInfoCallback = discovery("PyKOS.Util.Logging", "info")));
+  __check(NULL != (pykosLoggingWarningCallback = discovery("PyKOS.Util.Logging", "warning")));
+  __check(NULL != (pykosLoggingErrorCallback = discovery("PyKOS.Util.Logging", "error")));
+  __check(NULL != (pykosLoggingCriticalCallback = discovery("PyKOS.Util.Logging", "critical")));
 }

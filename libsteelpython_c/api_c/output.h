@@ -22,9 +22,7 @@
 
 #include "util/misc.h"
 
-/* callback types */
-typedef void(*TPykosOutputCallback)(char c);
-typedef void(*TPykosLoggingCallback)(const char *str);
+#include "api_c/discovery.h"
 
 /* _pykosapi.pykosOutput
  *
@@ -34,8 +32,8 @@ typedef void(*TPykosLoggingCallback)(const char *str);
  * params:
  *   c - a character to be printed in the KSP console window
  */
-extern TPykosOutputCallback pykosOutputCallback;
 PyObject* pykosOutput (PyObject *self, PyObject *args);
+void pykosOutput_c (char c);
 
 
 /* _pykosapi.pykosLoggingDebug
@@ -46,7 +44,6 @@ PyObject* pykosOutput (PyObject *self, PyObject *args);
  * params:
  *   str - a string to be logged in pykos.log
  */
-extern TPykosLoggingCallback pykosLoggingDebugCallback;
 PyObject *pykosLoggingDebug (PyObject *self, PyObject *args);
 
 /* _pykosapi.pykosLoggingInfo
@@ -57,7 +54,6 @@ PyObject *pykosLoggingDebug (PyObject *self, PyObject *args);
  * params:
  *   str - a string to be logged in pykos.log
  */
-extern TPykosLoggingCallback pykosLoggingInfoCallback;
 PyObject *pykosLoggingInfo (PyObject *self, PyObject *args);
 
 /* _pykosapi.pykosLoggingWarning
@@ -68,7 +64,6 @@ PyObject *pykosLoggingInfo (PyObject *self, PyObject *args);
  * params:
  *   str - a string to be logged in pykos.log
  */
-extern TPykosLoggingCallback pykosLoggingWarningCallback;
 PyObject *pykosLoggingWarning (PyObject *self, PyObject *args);
 
 /* _pykosapi.pykosLoggingError
@@ -79,7 +74,6 @@ PyObject *pykosLoggingWarning (PyObject *self, PyObject *args);
  * params:
  *   str - a string to be logged in pykos.log
  */
-extern TPykosLoggingCallback pykosLoggingErrorCallback;
 PyObject *pykosLoggingError (PyObject *self, PyObject *args);
 
 /* _pykosapi.pykosLoggingCritical
@@ -90,5 +84,8 @@ PyObject *pykosLoggingError (PyObject *self, PyObject *args);
  * params:
  *   str - a string to be logged in pykos.log
  */
-extern TPykosLoggingCallback pykosLoggingCriticalCallback;
 PyObject *pykosLoggingCritical (PyObject *self, PyObject *args);
+
+/* discover the callbacks for the functions in the output module
+ */
+void output_discoverCallbacks (void);
