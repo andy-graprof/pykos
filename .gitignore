@@ -1,5 +1,7 @@
 
 bin/
+obj/
 *.userprefs
+*.md.pc
 
 packages

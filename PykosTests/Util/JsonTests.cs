@@ -70,17 +70,26 @@ public class JsonTests
     }
 
   [Test ()]
-  public void JsonValueTest_Array ()
+  public void JsonArrayTest_valid ()
     {
-      List<Json> res = Json.decode("[null,true,false,\"hello world\",42,42.2]").asArray();
-      Assert.AreEqual(null, res[0].asValue<object>());
-      Assert.AreEqual(true, res[1].asValue<bool>());
-      Assert.AreEqual(false, res[2].asValue<bool>());
-      Assert.AreEqual("hello world", res[3].asValue<string>());
-      Assert.AreEqual(42, res[4].asValue<int>());
-      Assert.AreEqual(42.2, res[5].asValue<float>());
+      Assert.AreEqual(new List<Json>(), Json.decode("[]").asArray());
+      Assert.AreEqual(new List<Json>(), Json.decode("[ \t ]").asArray());
+      Assert.AreEqual(null, Json.decode("[null]").asArray()[0].asValue<object>());
+      Assert.AreEqual("hello", Json.decode("[\"hello\",\"world\"]").asArray()[0].asValue<string>());
+      Assert.AreEqual("world", Json.decode("[\"hello\",\"world\"]").asArray()[1].asValue<string>());
+      Assert.AreEqual("hello", Json.decode("[  \"hello\"  ,  \"world\"  ]").asArray()[0].asValue<string>());
+      Assert.AreEqual("world", Json.decode("[  \"hello\"  ,  \"world\"  ]").asArray()[1].asValue<string>());
+      Assert.AreEqual("hello\"", Json.decode("[\"hello\\\"\",\"world\"]").asArray()[0].asValue<string>());
+      Assert.AreEqual("\"world", Json.decode("[\"hello\",\"\\\"world\"]").asArray()[1].asValue<string>());
     }
 
+  [Test ()]
+  public void JsonArrayTest_invalid ()
+    {
+      Assert.Throws<JsonException>(delegate { Json.decode("[,null]").asValue<object>(); } );
+      Assert.Throws<JsonException>(delegate { Json.decode("[null,]").asValue<object>(); } );
+      Assert.Throws<JsonException>(delegate { Json.decode("[").asValue<object>(); } );
+    }
 }
 
 }

@@ -19,7 +19,7 @@
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
-    <OutputPath>bin\Debug</OutputPath>
+    <OutputPath>bin\$(Configuration)</OutputPath>
     <OutputName>libsteelpython_c</OutputName>
     <CompileTarget>SharedLibrary</CompileTarget>
     <SourceDirectory>.</SourceDirectory>

@@ -12,20 +12,12 @@ public class JsonException : Exception
   public JsonException (string msg, Exception inner) : base(msg, inner) { }
 }
 
-enum JsonType
-{
-  JSON_ARRAY,
-  JSON_OBJECT,
-  JSON_VALUE
-};
-
 public class Json
 {
 
   private string str = null;
 
   object value = null;
-  JsonType type = JsonType.JSON_VALUE;
 
   public Json (string s)
     {
@@ -40,24 +32,24 @@ public class Json
 
   public List<Json> asArray ()
     {
-      if (type != JsonType.JSON_ARRAY)
-        throw new JsonException("is not a valid JSON array: '" + str + "'");
+      if (!(value is List<Json>))
+        throw new JsonException("not a valid JSON array: '" + str + "'");
 
       return (List<Json>)value;
     }
 
   public Dictionary<string, Json> asObject ()
     {
-      if (type != JsonType.JSON_OBJECT)
-        throw new JsonException("is not a valid JSON object: '" + str + "'");
+      if (!(value is Dictionary<string, Json>))
+        throw new JsonException("not a valid JSON object: '" + str + "'");
 
       return (Dictionary<string, Json>)value;
     }
 
   public T asValue<T> ()
     {
-      if (type != JsonType.JSON_VALUE)
-        throw new JsonException("is not a valid JSON value: '" + str + "'");
+      if (value is List<Json> || value is Dictionary<string, Json>)
+        throw new JsonException("not a valid JSON value: '" + str + "'");
 
       try
         {
@@ -65,13 +57,15 @@ public class Json
         }
       catch (Exception e)
         {
-          throw new JsonException("invalid conversion requested: '" + str + "' to " + typeof(T).Name, e);
+          throw new JsonException("can not be converted to " + typeof(T).Name + ": '" + str + "'", e);
         }
 
     }
 
   private static object parse (string s)
     {
+      Console.WriteLine("parsing: '" + s + "'");
+
       if (s.Equals("null"))
         return null;
       if (s.Equals("true"))
@@ -103,77 +97,59 @@ public class Json
 
       while (s != "")
         {
-          if (s.StartsWith("\""))
-            {
-              int pos = 0;
-              do
-                pos = s.IndexOf('"', pos + 1);
-              while (pos > 0 && s[pos - 1] == '\\');
-              if (pos == -1)
-                throw new JsonException("unterminated json string: '" + s + "'");
-              values.Add(new Json(s.Substring(0, pos)));
-              s = s.Substring(pos + 1).Trim();
-            }
-          else if (s.StartsWith("["))
-            {
-              int pos = 0;
-              int depth = 1;
-              do
-                {
-                  pos = s.IndexOfAny(new char[] { '[', ']' }, pos + 1);
-                  depth += ((s[pos] == '[') ? 1 : -1);
-                }
-              while (pos > 0 && depth > 0);
-              if (pos == -1)
-                throw new JsonException("unterminated json array: '" + s + "'");
-              values.Add(new Json(s.Substring(0, pos)));
-              s = s.Substring(pos + 1).Trim();
-            }
-          else if (s.StartsWith("{"))
-            {
-              int pos = 0;
-              int depth = 1;
-              do
-                {
-                  pos = s.IndexOfAny(new char[] { '{', '}' }, pos + 1);
-                  depth += ((s[pos] == '{') ? 1 : -1);
-                }
-              while (pos > 0 && depth > 0);
-              if (pos == -1)
-                throw new JsonException("unterminated json object: '" + s + "'");
-              values.Add(new Json(s.Substring(0, pos)));
-              s = s.Substring(pos + 1).Trim();
-            }
+          int token_end;
+          if (s[0] == '"')
+            token_end = seekStringTokenEnd(s);
+          else if (s[0] == '[')
+            token_end = seekArrayTokenEnd(s);
+          else if (s[0] == '{')
+            token_end = seekObjectTokenEnd(s);
           else
-            {
-              int pos = s.IndexOf(' ');
-              if (pos == -1)
-                {
-                  values.Add(new Json(s));
-                  s = "";
-                }
-              else
-                {
-                  values.Add(new Json(s.Substring(0, pos)));
-                  s = s.Substring(pos + 1).Trim();
-                }
-            }
+            token_end = s.IndexOf(',') - 1;
 
-          if (s != "" && !s.StartsWith(","))
-            throw new JsonException("unexpected token in input: '" + s + "'");
+          string head = (token_end >= 0) ? s.Substring(0, token_end + 1) : s;
+          s = (token_end >= 0) ? s.Substring(token_end + 1).Trim() : "";
+
+          Console.WriteLine("head: '" + head + "'; tail: '" + s + "'");
+
+          values.Add(new Json(head));
 
           if (s != "")
-            s = s.Substring(1);
+            {
+              if (s[0] != ',')
+                throw new JsonException("unexpected characters out of token near '" + s + "'");
+              s = s.Substring(1).Trim();
+              if (s == "")
+                throw new JsonException("unexpected end of array");
+            }
         }
 
       return values;
     }
 
+  private static int seekStringTokenEnd (string s)
+    {
+      int pos = 0;
+      do
+        pos = s.IndexOf('"', pos + 1);
+      while (pos > 0 && s[pos - 1] == '\\');
+
+      return pos;
+    }
+
+  private static int seekArrayTokenEnd (string s)
+    {
+      throw new NotImplementedException();
+    }
+
+  private static int seekObjectTokenEnd (string s)
+    {
+      throw new NotImplementedException();
+    }
+
   private static object parseObject (string s)
     {
-      Dictionary<string, Json> values = new Dictionary<string, Json>();
-
-      return values;
+      throw new NotImplementedException();
     }
 }
 
