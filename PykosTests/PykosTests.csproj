@@ -5,11 +5,10 @@
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProductVersion>8.0.30703</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
-    <ProjectGuid>{614CA8CA-A49A-4414-BE87-EB1258944661}</ProjectGuid>
+    <ProjectGuid>{9C61EEA5-3CDE-4834-8DBA-2A46BB64F0FC}</ProjectGuid>
     <OutputType>Library</OutputType>
-    <RootNamespace>PyKOS</RootNamespace>
-    <AssemblyName>PyKOS</AssemblyName>
-    <SynchReleaseVersion>false</SynchReleaseVersion>
+    <RootNamespace>PykosTests</RootNamespace>
+    <AssemblyName>PykosTests</AssemblyName>
     <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
@@ -23,7 +22,7 @@
     <ConsolePause>false</ConsolePause>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
-    <DebugType>none</DebugType>
+    <DebugType>full</DebugType>
     <Optimize>true</Optimize>
     <OutputPath>bin\Release</OutputPath>
     <ErrorReport>prompt</ErrorReport>
@@ -31,38 +30,25 @@
     <ConsolePause>false</ConsolePause>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="AssemblyInfo.cs" />
-    <Compile Include="Util\Logging.cs" />
-    <Compile Include="Gui\GuiManager.cs" />
-    <Compile Include="Gui\ToolbarButton.cs" />
-    <Compile Include="Gui\ConsoleWindow.cs" />
-    <Compile Include="Gui\ConsoleWidget.cs" />
-    <Compile Include="Gui\ButtonWidget.cs" />
-    <Compile Include="Gui\Widget.cs" />
-    <Compile Include="Gui\Window.cs" />
-    <Compile Include="PyKOS.cs" />
-    <Compile Include="Python\Interpreter.cs" />
-    <Compile Include="Util\Json.cs" />
+    <Reference Include="System" />
+    <Reference Include="nunit.framework">
+      <HintPath>..\packages\NUnit.2.6.4\lib\nunit.framework.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>
+    <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
     <Folder Include="Util\" />
-    <Folder Include="Gui\" />
-    <Folder Include="Python\" />
   </ItemGroup>
   <ItemGroup>
-    <Reference Include="System" />
-    <Reference Include="Assembly-CSharp">
-      <HintPath>..\..\..\..\..\usr\local\share\KSP_linux\KSP_Data\Managed\Assembly-CSharp.dll</HintPath>
-    </Reference>
-    <Reference Include="UnityEngine">
-      <HintPath>..\..\..\..\..\usr\local\share\KSP_linux\KSP_Data\Managed\UnityEngine.dll</HintPath>
-    </Reference>
+    <Compile Include="Util\JsonTests.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\libsteelpython_c\libsteelpython_c.cproj">
-      <Project>{0E07CD92-7FD4-4E15-9EA4-762487A037CC}</Project>
-      <Name>libsteelpython_c</Name>
+    <ProjectReference Include="..\Pykos\Pykos.csproj">
+      <Project>{614CA8CA-A49A-4414-BE87-EB1258944661}</Project>
+      <Name>Pykos</Name>
     </ProjectReference>
   </ItemGroup>
 </Project>

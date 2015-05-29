@@ -18,7 +18,7 @@ rm -rf $DIR
 mkdir -vp $PLUGINDIR $LIBSDIR $PYAPIDIR $RESOURCESDIR
 
 PLUGIN="PykosLauncher/bin/Debug/PykosLauncher.dll"
-LIBS="Pykos/bin/Debug/PyKOS.dll libsteelpython_c/bin/Debug/libsteelpython_c.so thirdparty/Json.NET/Newtonsoft.Json.dll"
+LIBS="Pykos/bin/Debug/PyKOS.dll libsteelpython_c/bin/Debug/libsteelpython_c.so"
 PYAPI="pykosapi_py/pykos"
 RESOURCES="Resources/pykos"
 

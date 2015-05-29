@@ -22,8 +22,6 @@ using System;
 using System.IO;
 using System.Collections.Generic;
 
-using Newtonsoft.Json;
-
 namespace PyKOS.Util
 {
 
@@ -54,10 +52,10 @@ internal static class Logging
     {
       return log(msg, "DBG", LOGLEVEL_DEBUG);
     }
-    
+
   public static string debug_json (string args)
     {
-      return debug(JsonConvert.DeserializeObject<List<string>>(args)[0]);
+      return debug(Json.decode(args).asArray()[0].asValue<string>());
     }
 
   public static string info (string msg)
@@ -67,7 +65,7 @@ internal static class Logging
 
   public static string info_json (string args)
     {
-      return info(JsonConvert.DeserializeObject<List<string>>(args)[0]);
+      return info(Json.decode(args).asArray()[0].asValue<string>());
     }
 
   public static string warning (string msg)
@@ -77,7 +75,7 @@ internal static class Logging
 
   public static string warning_json (string args)
     {
-      return warning(JsonConvert.DeserializeObject<List<string>>(args)[0]);
+      return warning(Json.decode(args).asArray()[0].asValue<string>());
     }
 
   public static string error (string msg)
@@ -87,7 +85,7 @@ internal static class Logging
 
   public static string error_json (string args)
     {
-      return error(JsonConvert.DeserializeObject<List<string>>(args)[0]);
+      return error(Json.decode(args).asArray()[0].asValue<string>());
     }
 
   public static string critical (string msg)
@@ -97,7 +95,7 @@ internal static class Logging
 
   public static string critical_json (string args)
     {
-      return critical(JsonConvert.DeserializeObject<List<string>>(args)[0]);
+      return critical(Json.decode(args).asArray()[0].asValue<string>());
     }
 
   private static string log (string msg, string loglevel_str, int loglevel)
@@ -111,7 +109,7 @@ internal static class Logging
       logfile.WriteLine(s);
       // write to KSP log
       Console.WriteLine(s);
-      
+
       return null;
     }
 
