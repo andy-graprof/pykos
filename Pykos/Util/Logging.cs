@@ -44,6 +44,7 @@ internal static class Logging
     {
       minimumLoglevel = LOGLEVEL_NOTSET;
 
+      Directory.CreateDirectory(Path.GetDirectoryName(logfilename));
       logfile = new StreamWriter(logfilename);
       logfile.AutoFlush = true;
     }
@@ -53,19 +54,9 @@ internal static class Logging
       return log(msg, "DBG", LOGLEVEL_DEBUG);
     }
 
-  public static string debug_json (string args)
-    {
-      return debug(Json.decode(args).asArray()[0].asValue<string>());
-    }
-
   public static string info (string msg)
     {
       return log(msg, "INF", LOGLEVEL_INFO);
-    }
-
-  public static string info_json (string args)
-    {
-      return info(Json.decode(args).asArray()[0].asValue<string>());
     }
 
   public static string warning (string msg)
@@ -73,19 +64,9 @@ internal static class Logging
       return log(msg, "WRN", LOGLEVEL_WARNING);
     }
 
-  public static string warning_json (string args)
-    {
-      return warning(Json.decode(args).asArray()[0].asValue<string>());
-    }
-
   public static string error (string msg)
     {
       return log(msg, "ERR", LOGLEVEL_ERROR);
-    }
-
-  public static string error_json (string args)
-    {
-      return error(Json.decode(args).asArray()[0].asValue<string>());
     }
 
   public static string critical (string msg)
@@ -93,15 +74,13 @@ internal static class Logging
       return log(msg, "CRT", LOGLEVEL_CRITICAL);
     }
 
-  public static string critical_json (string args)
-    {
-      return critical(Json.decode(args).asArray()[0].asValue<string>());
-    }
-
   private static string log (string msg, string loglevel_str, int loglevel)
     {
       if (loglevel < minimumLoglevel)
         return null;
+
+      if (msg[0] == '[')
+        msg = Json.decode(msg).asArray()[0].asValue<string>();
 
       string s = "[" + DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss.ffff") + "][" + loglevel_str + "] " + msg;
 

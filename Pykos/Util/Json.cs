@@ -2,6 +2,8 @@
 using System;
 using System.Collections.Generic;
 
+/* json reference: http://json.org/ */
+
 namespace PyKOS.Util
 {
 
@@ -64,7 +66,7 @@ public class Json
 
   private static object parse (string s)
     {
-      Console.WriteLine("parsing: '" + s + "'");
+      Logging.debug("JSON: parsing: '" + s + "'");
 
       if (s.Equals("null"))
         return null;
@@ -110,7 +112,7 @@ public class Json
           string head = (token_end >= 0) ? s.Substring(0, token_end + 1) : s;
           s = (token_end >= 0) ? s.Substring(token_end + 1).Trim() : "";
 
-          Console.WriteLine("head: '" + head + "'; tail: '" + s + "'");
+          Logging.debug("JSON: head: '" + head + "'; tail: '" + s + "'");
 
           values.Add(new Json(head));
 
